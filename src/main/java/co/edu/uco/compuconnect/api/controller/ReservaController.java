@@ -25,7 +25,7 @@ import co.edu.uco.compuconnect.dto.ReservaDTO;
 
 
 @RestController
-@RequestMapping("publico/api/v1/reserva")
+@RequestMapping("compuconnect/api/v1/reserva")
 public final class ReservaController {
 
     private ReservaFacade facade;
