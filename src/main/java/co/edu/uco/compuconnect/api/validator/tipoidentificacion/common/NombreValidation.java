@@ -1,4 +1,4 @@
-package co.edu.uco.compuconnect.api.validator.tipousuario.common;
+package co.edu.uco.compuconnect.api.validator.tipoidentificacion.common;
 
 import co.edu.uco.compuconnect.api.validator.Result;
 import co.edu.uco.compuconnect.api.validator.Validation;
@@ -19,7 +19,7 @@ public class NombreValidation implements Validation<String>{
 	        Result result = Result.create();
 
 	        if (UtilText.isNull(data)) {
-	            result.addMessage("El nombre del tipo usuario no puede estar vacío");
+	            result.addMessage("El nombre del tipo identificacion no puede estar vacío");
 	        }
 
 	        return result;
