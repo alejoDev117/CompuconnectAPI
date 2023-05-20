@@ -16,10 +16,9 @@ import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.business.facade.TipoIdentificacionFacade;
 import co.edu.uco.compuconnect.business.facade.imp.TipoIdentificacionFacadeImp;
 import co.edu.uco.compuconnect.dto.TipoIdentificacionDTO;
-import co.edu.uco.compuconnect.dto.TipoUsuarioDTO;
 
 @RestController
-@RequestMapping("compuconnect/api/v1/tipousuario")
+@RequestMapping("compuconnect/api/v1/tipoidentificacion")
 public final class TipoIdentificacionController {
 
     private TipoIdentificacionFacade facade;
@@ -29,8 +28,8 @@ public final class TipoIdentificacionController {
     }
 
     @GetMapping("/dummy")
-    public TipoUsuarioDTO dummy() {
-        return TipoUsuarioDTO.create();
+    public TipoIdentificacionDTO dummy() {
+        return TipoIdentificacionDTO.create();
     }
 
     @GetMapping

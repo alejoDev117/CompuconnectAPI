@@ -6,20 +6,21 @@ import co.edu.uco.compuconnect.api.validator.tipousuario.common.DescripcionValid
 import co.edu.uco.compuconnect.api.validator.tipousuario.common.IdentificadorValidation;
 import co.edu.uco.compuconnect.api.validator.tipousuario.common.NombreValidation;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
+import co.edu.uco.compuconnect.dto.TipoIdentificacionDTO;
 import co.edu.uco.compuconnect.dto.TipoUsuarioDTO;
 
-public final class ConsultarTipoIdentificacionValidation implements Validation<TipoUsuarioDTO> {
+public final class ConsultarTipoIdentificacionValidation implements Validation<TipoIdentificacionDTO> {
 
     private ConsultarTipoIdentificacionValidation() {
         super();
     }
 
-    public static Result validate(final TipoUsuarioDTO data) {
+    public static Result validate(final TipoIdentificacionDTO data) {
         return new ConsultarTipoIdentificacionValidation().execute(data);
     }
 
     @Override
-    public Result execute(final TipoUsuarioDTO data) {
+    public Result execute(final TipoIdentificacionDTO data) {
         var result = Result.create();
 
         if (UtilObject.isNull(data)) {
