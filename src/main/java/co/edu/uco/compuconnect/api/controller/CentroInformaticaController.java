@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,7 +61,7 @@ public final class CentroInformaticaController {
     }
 
     @PostMapping
-    public ResponseEntity<Response<CentroInformaticaDTO>> create(@RequestParam CentroInformaticaDTO dto) {
+    public ResponseEntity<Response<CentroInformaticaDTO>> create(@RequestBody CentroInformaticaDTO dto) {
         var statusCode = HttpStatus.OK;
         var response = new Response<CentroInformaticaDTO>();
 
@@ -92,7 +93,7 @@ public final class CentroInformaticaController {
     }
 
     @PutMapping("/{id}")
-    public CentroInformaticaDTO update(@PathVariable UUID id, @RequestParam CentroInformaticaDTO dto) {
+    public CentroInformaticaDTO update(@PathVariable UUID id, @RequestBody CentroInformaticaDTO dto) {
         return dto.setIdentificador(id);
     }
 
