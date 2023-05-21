@@ -24,6 +24,10 @@ public class Response<T> {
 		setMessages(new ArrayList<>());
 	}
 	
+	public final List<T> getData() {
+		return data;
+	}
+	
 	public final void setData(final List<T> data) {
 		this.data = UtilObject.getDefault(data, new ArrayList<>());
 	}
