@@ -59,7 +59,7 @@ public final class CentroInformaticaController {
         return CentroInformaticaDTO.create().setIdentificador(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Response<CentroInformaticaDTO>> create(@RequestParam CentroInformaticaDTO dto) {
         var statusCode = HttpStatus.OK;
         var response = new Response<CentroInformaticaDTO>();
