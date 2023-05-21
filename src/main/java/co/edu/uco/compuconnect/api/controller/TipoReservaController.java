@@ -32,7 +32,7 @@ public final class TipoReservaController {
         return TipoReservaDTO.create();
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<Response<TipoReservaDTO>> list(@RequestParam TipoReservaDTO dto) {
         List<TipoReservaDTO> lista = new ArrayList<>();
         lista.add(TipoReservaDTO.create());

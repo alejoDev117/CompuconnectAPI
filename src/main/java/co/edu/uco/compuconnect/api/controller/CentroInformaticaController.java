@@ -23,7 +23,7 @@ import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
 import co.edu.uco.compuconnect.dto.CentroInformaticaDTO;
 
 @RestController
-@RequestMapping("compuconnect/api/v1/centro-informatica")
+@RequestMapping("compuconnect/api/v1/centroinformatica")
 public final class CentroInformaticaController {
 
     private CentroInformaticaFacade facade;
@@ -59,7 +59,7 @@ public final class CentroInformaticaController {
         return CentroInformaticaDTO.create().setIdentificador(id);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Response<CentroInformaticaDTO>> create(@RequestParam CentroInformaticaDTO dto) {
         var statusCode = HttpStatus.OK;
         var response = new Response<CentroInformaticaDTO>();
