@@ -6,7 +6,7 @@ import java.util.List;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
 
 
-public class Response<T> {
+public final  class Response<T> {
 	
 	private List<T> data;
 	private List<String> messages;

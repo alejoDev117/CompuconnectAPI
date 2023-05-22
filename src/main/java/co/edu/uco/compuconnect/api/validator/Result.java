@@ -6,7 +6,7 @@ import java.util.List;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilText;
 
-public class Result {
+public final class Result {
 	
 	private List<String> messages;
 	

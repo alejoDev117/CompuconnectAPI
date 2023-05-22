@@ -21,6 +21,7 @@ import co.edu.uco.compuconnect.api.validator.centroinformatica.CrearCentroInform
 import co.edu.uco.compuconnect.business.facade.CentroInformaticaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.CentroInformaticaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
+import co.edu.uco.compuconnect.crosscutting.utils.Messages.CentroInformaticaControllerMessage;
 import co.edu.uco.compuconnect.dto.CentroInformaticaDTO;
 
 @RestController
@@ -48,7 +49,7 @@ public final class CentroInformaticaController {
         lista.add(CentroInformaticaDTO.create());
 
         List<String> messages = new ArrayList<>();
-        messages.add("Centros de Informática consultados exitosamente");
+        messages.add(CentroInformaticaControllerMessage.GET_RESPONSE_SUCCESSFULLY);
 
         Response<CentroInformaticaDTO> response = new Response<>(lista, messages);
 
