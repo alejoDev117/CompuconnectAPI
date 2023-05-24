@@ -2,12 +2,11 @@ package co.edu.uco.compuconnect.api.validator.tipoidentificacion;
 
 import co.edu.uco.compuconnect.api.validator.Result;
 import co.edu.uco.compuconnect.api.validator.Validation;
-import co.edu.uco.compuconnect.api.validator.tipousuario.common.DescripcionValidation;
-import co.edu.uco.compuconnect.api.validator.tipousuario.common.IdentificadorValidation;
-import co.edu.uco.compuconnect.api.validator.tipousuario.common.NombreValidation;
+import co.edu.uco.compuconnect.api.validator.generalcommon.IdentificadorValidation;
+import co.edu.uco.compuconnect.api.validator.tipoidentificacion.common.DescripcionValidation;
+import co.edu.uco.compuconnect.api.validator.tipoidentificacion.common.NombreValidation;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
 import co.edu.uco.compuconnect.dto.TipoIdentificacionDTO;
-import co.edu.uco.compuconnect.dto.TipoUsuarioDTO;
 
 public final class ConsultarTipoIdentificacionValidation implements Validation<TipoIdentificacionDTO> {
 

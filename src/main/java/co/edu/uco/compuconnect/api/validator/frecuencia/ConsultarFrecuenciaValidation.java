@@ -3,8 +3,8 @@ package co.edu.uco.compuconnect.api.validator.frecuencia;
 import co.edu.uco.compuconnect.api.validator.Result;
 import co.edu.uco.compuconnect.api.validator.Validation;
 import co.edu.uco.compuconnect.api.validator.frecuencia.common.DescripcionValidation;
-import co.edu.uco.compuconnect.api.validator.frecuencia.common.IdentificadorValidation;
 import co.edu.uco.compuconnect.api.validator.frecuencia.common.NombreValidation;
+import co.edu.uco.compuconnect.api.validator.generalcommon.IdentificadorValidation;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
 import co.edu.uco.compuconnect.dto.FrecuenciaDTO;
 

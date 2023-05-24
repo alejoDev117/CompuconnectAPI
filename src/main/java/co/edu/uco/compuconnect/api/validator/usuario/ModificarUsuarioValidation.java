@@ -2,9 +2,9 @@ package co.edu.uco.compuconnect.api.validator.usuario;
 
 import co.edu.uco.compuconnect.api.validator.Result;
 import co.edu.uco.compuconnect.api.validator.Validation;
+import co.edu.uco.compuconnect.api.validator.generalcommon.IdentificadorValidation;
 import co.edu.uco.compuconnect.api.validator.usuario.common.CorreoInstitucionalValidation;
 import co.edu.uco.compuconnect.api.validator.usuario.common.IdentificacionValidation;
-import co.edu.uco.compuconnect.api.validator.usuario.common.IdentificadorValidation;
 import co.edu.uco.compuconnect.api.validator.usuario.common.NombreValidation;
 import co.edu.uco.compuconnect.api.validator.usuario.common.TipoIdentificacionValidation;
 import co.edu.uco.compuconnect.api.validator.usuario.common.TipoUsuarioValidation;
