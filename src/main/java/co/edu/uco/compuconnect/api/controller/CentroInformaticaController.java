@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,6 +30,8 @@ import co.edu.uco.compuconnect.dto.CentroInformaticaDTO;
 @RequestMapping("compuconnect/api/v1/centroinformatica")
 public final class CentroInformaticaController {
 
+	
+	private Logger log = LoggerFactory.getLogger(CentroInformaticaController.class);
     private CentroInformaticaFacade facade;
 
     public CentroInformaticaController() {
@@ -80,13 +84,13 @@ public final class CentroInformaticaController {
         } catch (final CompuconnectException exception) {
             statusCode = HttpStatus.BAD_REQUEST;
             response.getMessages().add(exception.getUserMessage());
-            System.err.println(exception.getTechnicalMessage());
-            System.err.println(exception.getType());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+      
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
             response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            System.err.println(exception.getMessage());
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
             exception.printStackTrace();
         }
 

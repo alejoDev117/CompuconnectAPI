@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("compuconnect/api/v1/diasemanal")
+@RequestMapping("compuconnect/api/v1/estadoperiodofuncionamiento")
 public final class EstadoPeriodoFuncionamientoController {
 
     private EstadoPeriodoFuncionamientoFacade facade;
