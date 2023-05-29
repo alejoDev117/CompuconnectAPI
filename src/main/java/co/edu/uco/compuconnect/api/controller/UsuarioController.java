@@ -145,10 +145,7 @@ public final class UsuarioController {
       
             exception.printStackTrace();
         } catch (final Exception exception) {
-            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
-            exception.printStackTrace();
+
         }
 
         return new ResponseEntity<>(response, statusCode);

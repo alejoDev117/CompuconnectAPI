@@ -45,19 +45,26 @@ public final class CentroInformaticaController {
 
     @GetMapping
     public ResponseEntity<Response<CentroInformaticaDTO>> list() {
-        List<CentroInformaticaDTO> lista = new ArrayList<>();
-        lista.add(CentroInformaticaDTO.create());
-        lista.add(CentroInformaticaDTO.create());
-        lista.add(CentroInformaticaDTO.create());
-        lista.add(CentroInformaticaDTO.create());
-        lista.add(CentroInformaticaDTO.create());
-
-        List<String> messages = new ArrayList<>();
-        messages.add(CentroInformaticaControllerMessage.GET_RESPONSE_SUCCESSFULLY);
-
-        Response<CentroInformaticaDTO> response = new Response<>(lista, messages);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            List<CentroInformaticaDTO> lista = facade.read(null);
+            List<String> messages = new ArrayList<>();
+            messages.add("Usuarios consultados exitosamente");
+            Response<CentroInformaticaDTO> response = new Response<>(lista, messages);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (final CompuconnectException exception) {
+            List<String> messages = new ArrayList<>();
+            messages.add(exception.getUserMessage());
+            Response<CentroInformaticaDTO> response = new Response<>(null, messages);
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (final Exception exception) {
+            List<String> messages = new ArrayList<>();
+            messages.add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+            Response<CentroInformaticaDTO> response = new Response<>(null, messages);
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            exception.printStackTrace();
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/{id}")
