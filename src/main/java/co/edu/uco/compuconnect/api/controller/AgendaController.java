@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uco.compuconnect.api.controller.response.Response;
+import co.edu.uco.compuconnect.api.validator.agenda.ActualizarAgendaValidation;
 import co.edu.uco.compuconnect.api.validator.agenda.CrearAgendaValidation;
 import co.edu.uco.compuconnect.business.facade.AgendaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.AgendaFacadeImp;
@@ -96,9 +97,38 @@ public final class AgendaController {
     }
 
     @PutMapping("/{id}")
-    public AgendaDTO update(@PathVariable UUID id, @RequestBody AgendaDTO dto) {
-        return dto.setIdentificador(id);
+    public ResponseEntity<Response<AgendaDTO>> update(@PathVariable UUID id, @RequestBody AgendaDTO dto) {
+        var statusCode = HttpStatus.OK;
+        var response = new Response<AgendaDTO>();
+
+        try {
+            dto.setIdentificador(id);
+
+            var result = ActualizarAgendaValidation.validate(dto);
+
+            if (result.getMessages().isEmpty()) {
+                facade.modificar(dto);
+                response.getMessages().add("La agenda se ha actualizado correctamente");
+            } else {
+                statusCode = HttpStatus.BAD_REQUEST;
+                response.setMessages(result.getMessages());
+            }
+
+        } catch (final CompuconnectException exception) {
+            statusCode = HttpStatus.BAD_REQUEST;
+            response.getMessages().add(exception.getUserMessage());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+            exception.printStackTrace();
+        } catch (final Exception exception) {
+            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            exception.printStackTrace();
+        }
+
+        return new ResponseEntity<>(response, statusCode);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response<String>> delete(@PathVariable UUID id) {

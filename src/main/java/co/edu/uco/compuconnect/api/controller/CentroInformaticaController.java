@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.api.validator.centroinformatica.CrearCentroInformaticaValidation;
+import co.edu.uco.compuconnect.api.validator.centroinformatica.ModificarCentroInformaticaValidation;
 import co.edu.uco.compuconnect.business.facade.CentroInformaticaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.CentroInformaticaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
@@ -98,16 +98,18 @@ public final class CentroInformaticaController {
     }
 
     @PutMapping("/{id}")
-    public CentroInformaticaDTO update(@PathVariable UUID id, @RequestBody CentroInformaticaDTO dto) {
-    	var statusCode = HttpStatus.OK;
-    	var response = new Response<CentroInformaticaDTO>();
-    	
-    	try {
-            var result = CrearCentroInformaticaValidation.validate(dto);
+    public ResponseEntity<Response<CentroInformaticaDTO>> update(@PathVariable UUID id, @RequestBody CentroInformaticaDTO dto) {
+        var statusCode = HttpStatus.OK;
+        var response = new Response<CentroInformaticaDTO>();
+
+        try {
+            dto.setIdentificador(id);
+
+            var result = ModificarCentroInformaticaValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
                 facade.update(dto);
-                response.getMessages().add("El centro de Informática se ha actualizado correctamente");
+                response.getMessages().add("El centro informatica se ha actualizado correctamente");
             } else {
                 statusCode = HttpStatus.BAD_REQUEST;
                 response.setMessages(result.getMessages());
@@ -117,7 +119,6 @@ public final class CentroInformaticaController {
             statusCode = HttpStatus.BAD_REQUEST;
             response.getMessages().add(exception.getUserMessage());
             log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
-      
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -126,9 +127,7 @@ public final class CentroInformaticaController {
             exception.printStackTrace();
         }
 
-       // return new ResponseEntity<>(response, statusCode);
-    	
-        return dto.setIdentificador(id);
+        return new ResponseEntity<>(response, statusCode);
     }
 
     @DeleteMapping("/{id}")

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.api.validator.periodofuncionamiento.CrearPeriodoFuncionamientoValidation;
+import co.edu.uco.compuconnect.api.validator.periodofuncionamiento.ModificarPeriodoFuncionamientoValidation;
 import co.edu.uco.compuconnect.business.facade.imp.PeriodoFuncionamientoFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
 import co.edu.uco.compuconnect.dto.PeriodoFuncionamientoDTO;
@@ -93,8 +94,36 @@ public final class PeriodoFuncionamientoController {
     }
 
     @PutMapping("/{id}")
-    public PeriodoFuncionamientoDTO update(@PathVariable UUID id, @RequestBody PeriodoFuncionamientoDTO dto) {
-        return dto.setIdentificador(id);
+    public ResponseEntity<Response<PeriodoFuncionamientoDTO>> update(@PathVariable UUID id, @RequestBody PeriodoFuncionamientoDTO dto) {
+        var statusCode = HttpStatus.OK;
+        var response = new Response<PeriodoFuncionamientoDTO>();
+
+        try {
+            dto.setIdentificador(id);
+
+            var result = ModificarPeriodoFuncionamientoValidation.validate(dto);
+
+            if (result.getMessages().isEmpty()) {
+                facade.modificar(dto);
+                response.getMessages().add("El periodo funcionamiento se ha actualizado correctamente");
+            } else {
+                statusCode = HttpStatus.BAD_REQUEST;
+                response.setMessages(result.getMessages());
+            }
+
+        } catch (final CompuconnectException exception) {
+            statusCode = HttpStatus.BAD_REQUEST;
+            response.getMessages().add(exception.getUserMessage());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+            exception.printStackTrace();
+        } catch (final Exception exception) {
+            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            exception.printStackTrace();
+        }
+
+        return new ResponseEntity<>(response, statusCode);
     }
 
     @DeleteMapping("/{id}")
