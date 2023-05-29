@@ -99,11 +99,62 @@ public final class CentroInformaticaController {
 
     @PutMapping("/{id}")
     public CentroInformaticaDTO update(@PathVariable UUID id, @RequestBody CentroInformaticaDTO dto) {
+    	var statusCode = HttpStatus.OK;
+    	var response = new Response<CentroInformaticaDTO>();
+    	
+    	try {
+            var result = CrearCentroInformaticaValidation.validate(dto);
+
+            if (result.getMessages().isEmpty()) {
+                facade.update(dto);
+                response.getMessages().add("El centro de Informática se ha actualizado correctamente");
+            } else {
+                statusCode = HttpStatus.BAD_REQUEST;
+                response.setMessages(result.getMessages());
+            }
+
+        } catch (final CompuconnectException exception) {
+            statusCode = HttpStatus.BAD_REQUEST;
+            response.getMessages().add(exception.getUserMessage());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+      
+            exception.printStackTrace();
+        } catch (final Exception exception) {
+            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            exception.printStackTrace();
+        }
+
+       // return new ResponseEntity<>(response, statusCode);
+    	
         return dto.setIdentificador(id);
     }
 
     @DeleteMapping("/{id}")
-    public CentroInformaticaDTO delete(@PathVariable UUID id) {
-        return CentroInformaticaDTO.create().setIdentificador(id);
+    public ResponseEntity<Response<String>> delete(@PathVariable UUID id) {
+        var statusCode = HttpStatus.OK;
+        var response = new Response<String>();
+
+        try {
+            CentroInformaticaDTO dto = new CentroInformaticaDTO();
+            dto.setIdentificador(id);
+            facade.delete(dto);
+            response.getMessages().add("El centro de Informática se ha eliminado correctamente");
+        } catch (final CompuconnectException exception) {
+            statusCode = HttpStatus.BAD_REQUEST;
+            response.getMessages().add(exception.getUserMessage());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+      
+            exception.printStackTrace();
+        } catch (final Exception exception) {
+            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            exception.printStackTrace();
+        }
+
+        return new ResponseEntity<>(response, statusCode);
     }
+
 }

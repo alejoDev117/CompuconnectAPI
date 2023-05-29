@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +28,7 @@ import co.edu.uco.compuconnect.dto.UsuarioDTO;
 @RequestMapping("compuconnect/api/v1/usuario")
 public final class UsuarioController {
 
+	private Logger log = LoggerFactory.getLogger(ReservaController.class);
     private UsuarioFacade facade;
 
     public UsuarioController() {
@@ -78,13 +81,12 @@ public final class UsuarioController {
         } catch (final CompuconnectException exception) {
             statusCode = HttpStatus.BAD_REQUEST;
             response.getMessages().add(exception.getUserMessage());
-            System.err.println(exception.getTechnicalMessage());
-            System.err.println(exception.getType());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
             response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            System.err.println(exception.getMessage());
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
             exception.printStackTrace();
         }
 
@@ -97,7 +99,28 @@ public final class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    public UsuarioDTO delete(@PathVariable UUID id) {
-        return UsuarioDTO.create().setIdentificador(id);
+    public ResponseEntity<Response<String>> delete(@PathVariable UUID id) {
+        var statusCode = HttpStatus.OK;
+        var response = new Response<String>();
+
+        try {
+            UsuarioDTO dto = new UsuarioDTO();
+            dto.setIdentificador(id);
+            facade.eliminar(dto);
+            response.getMessages().add("La reserva se ha eliminado/cancelado correctamente");
+        } catch (final CompuconnectException exception) {
+            statusCode = HttpStatus.BAD_REQUEST;
+            response.getMessages().add(exception.getUserMessage());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+      
+            exception.printStackTrace();
+        } catch (final Exception exception) {
+            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            exception.printStackTrace();
+        }
+
+        return new ResponseEntity<>(response, statusCode);
     }
 }

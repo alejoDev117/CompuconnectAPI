@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +27,7 @@ import co.edu.uco.compuconnect.dto.PeriodoFuncionamientoDTO;
 @RequestMapping("compuconnect/api/v1/periodo-funcionamiento")
 public final class PeriodoFuncionamientoController {
 
+	private Logger log = LoggerFactory.getLogger(PeriodoFuncionamientoController.class);
     private PeriodoFuncionamientoFacadeImp facade;
 
     public PeriodoFuncionamientoController() {
@@ -77,13 +80,12 @@ public final class PeriodoFuncionamientoController {
         } catch (final CompuconnectException exception) {
             statusCode = HttpStatus.BAD_REQUEST;
             response.getMessages().add(exception.getUserMessage());
-            System.err.println(exception.getTechnicalMessage());
-            System.err.println(exception.getType());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
             response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            System.err.println(exception.getMessage());
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
             exception.printStackTrace();
         }
 
@@ -96,7 +98,28 @@ public final class PeriodoFuncionamientoController {
     }
 
     @DeleteMapping("/{id}")
-    public PeriodoFuncionamientoDTO delete(@PathVariable UUID id) {
-        return PeriodoFuncionamientoDTO.create().setIdentificador(id);
+    public ResponseEntity<Response<String>> delete(@PathVariable UUID id) {
+        var statusCode = HttpStatus.OK;
+        var response = new Response<String>();
+
+        try {
+            PeriodoFuncionamientoDTO dto = new PeriodoFuncionamientoDTO();
+            dto.setIdentificador(id);
+            facade.eliminar(dto);
+            response.getMessages().add("La agenda se ha eliminado correctamente");
+        } catch (final CompuconnectException exception) {
+            statusCode = HttpStatus.BAD_REQUEST;
+            response.getMessages().add(exception.getUserMessage());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+      
+            exception.printStackTrace();
+        } catch (final Exception exception) {
+            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            exception.printStackTrace();
+        }
+
+        return new ResponseEntity<>(response, statusCode);
     }
 }
