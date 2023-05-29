@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.api.validator.centroinformatica.CrearCentroInformaticaValidation;
+import co.edu.uco.compuconnect.api.validator.centroinformatica.ModificarCentroInformaticaValidation;
 import co.edu.uco.compuconnect.business.facade.CentroInformaticaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.CentroInformaticaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
@@ -98,12 +98,62 @@ public final class CentroInformaticaController {
     }
 
     @PutMapping("/{id}")
-    public CentroInformaticaDTO update(@PathVariable UUID id, @RequestBody CentroInformaticaDTO dto) {
-        return dto.setIdentificador(id);
+    public ResponseEntity<Response<CentroInformaticaDTO>> update(@PathVariable UUID id, @RequestBody CentroInformaticaDTO dto) {
+        var statusCode = HttpStatus.OK;
+        var response = new Response<CentroInformaticaDTO>();
+
+        try {
+            dto.setIdentificador(id);
+
+            var result = ModificarCentroInformaticaValidation.validate(dto);
+
+            if (result.getMessages().isEmpty()) {
+                facade.update(dto);
+                response.getMessages().add("El centro informatica se ha actualizado correctamente");
+            } else {
+                statusCode = HttpStatus.BAD_REQUEST;
+                response.setMessages(result.getMessages());
+            }
+
+        } catch (final CompuconnectException exception) {
+            statusCode = HttpStatus.BAD_REQUEST;
+            response.getMessages().add(exception.getUserMessage());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+            exception.printStackTrace();
+        } catch (final Exception exception) {
+            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            exception.printStackTrace();
+        }
+
+        return new ResponseEntity<>(response, statusCode);
     }
 
     @DeleteMapping("/{id}")
-    public CentroInformaticaDTO delete(@PathVariable UUID id) {
-        return CentroInformaticaDTO.create().setIdentificador(id);
+    public ResponseEntity<Response<String>> delete(@PathVariable UUID id) {
+        var statusCode = HttpStatus.OK;
+        var response = new Response<String>();
+
+        try {
+            CentroInformaticaDTO dto = new CentroInformaticaDTO();
+            dto.setIdentificador(id);
+            facade.delete(dto);
+            response.getMessages().add("El centro de Informática se ha eliminado correctamente");
+        } catch (final CompuconnectException exception) {
+            statusCode = HttpStatus.BAD_REQUEST;
+            response.getMessages().add(exception.getUserMessage());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+      
+            exception.printStackTrace();
+        } catch (final Exception exception) {
+            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            exception.printStackTrace();
+        }
+
+        return new ResponseEntity<>(response, statusCode);
     }
+
 }

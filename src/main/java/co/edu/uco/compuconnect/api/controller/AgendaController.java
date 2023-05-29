@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uco.compuconnect.api.controller.response.Response;
+import co.edu.uco.compuconnect.api.validator.agenda.ActualizarAgendaValidation;
 import co.edu.uco.compuconnect.api.validator.agenda.CrearAgendaValidation;
 import co.edu.uco.compuconnect.business.facade.AgendaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.AgendaFacadeImp;
@@ -26,6 +29,8 @@ import co.edu.uco.compuconnect.dto.AgendaDTO;
 @RequestMapping("compuconnect/api/v1/agenda")
 public final class AgendaController {
 
+	
+	private Logger log = LoggerFactory.getLogger(AgendaController.class);
     private AgendaFacade facade;
 
     public AgendaController() {
@@ -68,7 +73,7 @@ public final class AgendaController {
             var result = CrearAgendaValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
-                facade.registrar(dto);;
+                facade.registrar(dto);
                 response.getMessages().add("La agenda se ha creado correctamente");
             } else {
                 statusCode = HttpStatus.BAD_REQUEST;
@@ -78,13 +83,13 @@ public final class AgendaController {
         } catch (final CompuconnectException exception) {
             statusCode = HttpStatus.BAD_REQUEST;
             response.getMessages().add(exception.getUserMessage());
-            System.err.println(exception.getTechnicalMessage());
-            System.err.println(exception.getType());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+            
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
             response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            System.err.println(exception.getMessage());
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
             exception.printStackTrace();
         }
 
@@ -92,12 +97,62 @@ public final class AgendaController {
     }
 
     @PutMapping("/{id}")
-    public AgendaDTO update(@PathVariable UUID id, @RequestBody AgendaDTO dto) {
-        return dto.setIdentificador(id);
+    public ResponseEntity<Response<AgendaDTO>> update(@PathVariable UUID id, @RequestBody AgendaDTO dto) {
+        var statusCode = HttpStatus.OK;
+        var response = new Response<AgendaDTO>();
+
+        try {
+            dto.setIdentificador(id);
+
+            var result = ActualizarAgendaValidation.validate(dto);
+
+            if (result.getMessages().isEmpty()) {
+                facade.modificar(dto);
+                response.getMessages().add("La agenda se ha actualizado correctamente");
+            } else {
+                statusCode = HttpStatus.BAD_REQUEST;
+                response.setMessages(result.getMessages());
+            }
+
+        } catch (final CompuconnectException exception) {
+            statusCode = HttpStatus.BAD_REQUEST;
+            response.getMessages().add(exception.getUserMessage());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+            exception.printStackTrace();
+        } catch (final Exception exception) {
+            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            exception.printStackTrace();
+        }
+
+        return new ResponseEntity<>(response, statusCode);
     }
 
+
     @DeleteMapping("/{id}")
-    public AgendaDTO delete(@PathVariable UUID id) {
-        return AgendaDTO.create().setIdentificador(id);
+    public ResponseEntity<Response<String>> delete(@PathVariable UUID id) {
+        var statusCode = HttpStatus.OK;
+        var response = new Response<String>();
+
+        try {
+            AgendaDTO dto = new AgendaDTO();
+            dto.setIdentificador(id);
+            facade.eliminar(dto);
+            response.getMessages().add("La agenda se ha eliminado correctamente");
+        } catch (final CompuconnectException exception) {
+            statusCode = HttpStatus.BAD_REQUEST;
+            response.getMessages().add(exception.getUserMessage());
+            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+      
+            exception.printStackTrace();
+        } catch (final Exception exception) {
+            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            exception.printStackTrace();
+        }
+
+        return new ResponseEntity<>(response, statusCode);
     }
 }
