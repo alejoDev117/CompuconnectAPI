@@ -32,16 +32,16 @@ public class AutorValidation implements Validation<UsuarioDTO> {
             if (UtilObject.isNull(data.getTipoUsuario())) {
                 result.addMessage("El tipo de usuario no puede ser nulo");
             }
-            if (UtilText.isNull(data.getNombre())) {
+            if (UtilText.getUtilText().isNull(data.getNombre())) {
                 result.addMessage("El nombre del usuario no puede estar vacío");
             }
             if (UtilObject.isNull(data.getTipoIdentificacion())) {
                 result.addMessage("El tipo de identificación del usuario no puede estar vacío");
             }
-            if (UtilText.isNull(data.getIdentificacion())) {
+            if (UtilText.getUtilText().isNull(data.getIdentificacion())) {
                 result.addMessage("El número de identificación del usuario no puede estar vacío");
             }
-            if (UtilText.isNull(data.getCorreoInstitucional())) {
+            if (UtilText.getUtilText().isNull(data.getCorreoInstitucional())) {
                 result.addMessage("El correo institucional del usuario no puede estar vacío");
             }
         }

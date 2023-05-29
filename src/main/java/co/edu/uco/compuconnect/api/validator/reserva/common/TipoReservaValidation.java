@@ -30,10 +30,10 @@ public class TipoReservaValidation implements Validation<TipoReservaDTO> {
             if (UtilObject.isNull(data.getIdentificador())) {
                 result.addMessage("No es posible continuar con el identificador del tipo reserva vacío");
             }
-            if (UtilText.isNull(data.getNombre())) {
+            if (UtilText.getUtilText().isNull(data.getNombre())) {
                 result.addMessage("El nombre del tipo de reserva no puede estar vacío");
             }
-            if (UtilText.isNull(data.getDescripcion())) {
+            if (UtilText.getUtilText().isNull(data.getDescripcion())) {
                 result.addMessage("La descripción del tipo de reserva no puede estar vacía");
             }
         }

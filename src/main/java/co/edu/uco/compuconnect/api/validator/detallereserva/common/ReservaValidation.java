@@ -44,7 +44,7 @@ public class ReservaValidation implements Validation<ReservaDTO> {
             if (UtilObject.isNull(data.getCentroInformatica())) {
                 result.addMessage("El centro de informática de la reserva no puede estar vacío");
             }
-            if (UtilText.isNull(data.getDescripcion())) {
+            if (UtilText.getUtilText().isNull(data.getDescripcion())) {
                 result.addMessage("La descripción de la reserva no puede estar vacía");
             }
             if (UtilObject.isNull(data.getHoraCreacion())) {

@@ -18,7 +18,7 @@ public class DescripcionValidation implements Validation<String> {
     public Result execute(String data) {
         Result result = Result.create();
 
-        if (UtilText.isNull(data)) {
+        if (UtilText.getUtilText().isNull(data)) {
             result.addMessage("La descripción del tipo reserva no puede estar vacía");
         }
 

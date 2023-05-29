@@ -26,10 +26,10 @@ public class FrecuenciaValidation implements Validation<FrecuenciaDTO> {
             if (UtilObject.isNull(data.getIdentificador())) {
                 result.addMessage("El identificador de la frecuencia no puede estar vacío");
             }
-            if (UtilText.isNull(data.getNombre())) {
+            if (UtilText.getUtilText().isNull(data.getNombre())) {
                 result.addMessage("El nombre de la frecuencia no puede estar vacío");
             }
-            if (UtilText.isNull(data.getDescripcion())) {
+            if (UtilText.getUtilText().isNull(data.getDescripcion())) {
                 result.addMessage("La descripción de la frecuencia no puede estar vacía");
             }
         }

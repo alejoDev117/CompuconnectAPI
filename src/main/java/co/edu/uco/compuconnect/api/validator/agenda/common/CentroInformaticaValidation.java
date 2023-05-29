@@ -26,10 +26,10 @@ public class CentroInformaticaValidation implements Validation<CentroInformatica
             if (UtilObject.isNull(data.getIdentificador())) {
                 result.addMessage("No es posible continuar con el identificador del centro de informática vacío");
             }
-            if (UtilText.isNull(data.getNombre())) {
+            if (UtilText.getUtilText().isNull(data.getNombre())) {
                 result.addMessage("El nombre del centro de informática no puede estar vacío");
             }
-            if (UtilText.isNull(data.getUbicacion())) {
+            if (UtilText.getUtilText().isNull(data.getUbicacion())) {
                 result.addMessage("La ubicación del centro de informática no puede estar vacía");
             }
         }

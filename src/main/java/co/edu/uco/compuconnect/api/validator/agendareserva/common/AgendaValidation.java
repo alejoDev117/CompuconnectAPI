@@ -32,7 +32,7 @@ public class AgendaValidation implements Validation<AgendaDTO> {
             if (UtilObject.isNull(data.getCentroInformatica())) {
                 result.addMessage("El centro de informática de la agenda no puede estar vacío");
             }
-            if (UtilText.isNull(data.getNombre())) {
+            if (UtilText.getUtilText().isNull(data.getNombre())) {
                 result.addMessage("El nombre de la agenda no puede estar vacío");
             }
         }

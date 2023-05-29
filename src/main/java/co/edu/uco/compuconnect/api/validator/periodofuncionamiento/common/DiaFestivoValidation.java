@@ -26,7 +26,7 @@ public class DiaFestivoValidation implements Validation<DiaFestivoDTO> {
             if (UtilObject.isNull(data.getIdentificador())) {
                 result.addMessage("No es posible continuar con el identificador del dia festivo vacío");
             }
-            if (UtilText.isNull(data.getNombre())) {
+            if (UtilText.getUtilText().isNull(data.getNombre())) {
                 result.addMessage("El nombre del dia festivo no puede estar vacío");
             }
             if (UtilObject.isNull(data.getFecha())) {

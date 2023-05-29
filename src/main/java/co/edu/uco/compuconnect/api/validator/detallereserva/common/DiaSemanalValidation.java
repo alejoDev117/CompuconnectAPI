@@ -26,7 +26,7 @@ public class DiaSemanalValidation implements Validation<DiaSemanalDTO> {
             if (UtilObject.isNull(data.getIdentificador())) {
                 result.addMessage("No es posible continuar con el identificador del día semanal vacío");
             }
-            if (UtilText.isNull(data.getNombre())) {
+            if (UtilText.getUtilText().isNull(data.getNombre())) {
                 result.addMessage("El nombre del día semanal no puede estar vacío");
             }
         }

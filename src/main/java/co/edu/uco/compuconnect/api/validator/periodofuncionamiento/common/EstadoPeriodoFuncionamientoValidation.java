@@ -26,7 +26,7 @@ public class EstadoPeriodoFuncionamientoValidation implements Validation<EstadoP
             if (UtilObject.isNull(data.getIdentificador())) {
                 result.addMessage("No es posible continuar con el identificador del estado periodo funcionamiento vacío");
             }
-            if (UtilText.isNull(data.getNombre())) {
+            if (UtilText.getUtilText().isNull(data.getNombre())) {
                 result.addMessage("El nombre del estado periodo funcionamiento no puede estar vacío");
             }
             if (UtilObject.isNull(data.getDescripcion())) {

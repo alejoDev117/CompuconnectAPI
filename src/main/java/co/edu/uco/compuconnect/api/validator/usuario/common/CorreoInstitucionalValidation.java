@@ -19,7 +19,7 @@ public class CorreoInstitucionalValidation implements Validation<String> {
     public Result execute(String data) {
         Result result = Result.create();
 
-        if (UtilText.isNull(data)) {
+        if (UtilText.getUtilText().isNull(data)) {
             result.addMessage("El correo institucional del usuario no puede estar vacío");
         }
 
