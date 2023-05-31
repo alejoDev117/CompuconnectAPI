@@ -22,20 +22,18 @@ import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.api.validator.usuario.CrearUsuarioValidation;
 import co.edu.uco.compuconnect.api.validator.usuario.ModificarUsuarioValidation;
 import co.edu.uco.compuconnect.business.facade.UsuarioFacade;
+import co.edu.uco.compuconnect.business.facade.imp.TipoUsuarioFacadeImp;
 import co.edu.uco.compuconnect.business.facade.imp.UsuarioFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
+import co.edu.uco.compuconnect.dto.TipoUsuarioDTO;
 import co.edu.uco.compuconnect.dto.UsuarioDTO;
 
 @RestController
 @RequestMapping("compuconnect/api/v1/usuario")
 public final class UsuarioController {
 
-	private Logger log = LoggerFactory.getLogger(ReservaController.class);
+	private Logger log = LoggerFactory.getLogger(UsuarioController.class);
     private UsuarioFacade facade;
-
-    public UsuarioController() {
-        facade = new UsuarioFacadeImp();
-    }
 
     @GetMapping("/dummy")
     public UsuarioDTO dummy() {
@@ -43,21 +41,18 @@ public final class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<Response<UsuarioDTO>> list() {
-        List<UsuarioDTO> lista = new ArrayList<>();
-        lista.add(UsuarioDTO.create());
-        lista.add(UsuarioDTO.create());
-        lista.add(UsuarioDTO.create());
-        lista.add(UsuarioDTO.create());
-        lista.add(UsuarioDTO.create());
-
-        List<String> messages = new ArrayList<>();
-        messages.add("Usuarios consultados exitosamente");
-
-        Response<UsuarioDTO> response = new Response<>(lista, messages);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+  	public ResponseEntity<Response<UsuarioDTO>> list(@RequestBody UsuarioDTO dto) {
+  		
+  		facade = new UsuarioFacadeImp();
+  		List<UsuarioDTO> lista = facade.consultar(dto);
+  		
+  		List<String> messages = new ArrayList<>();
+  		messages.add("Agendas reserva consultados correctamente");
+  		
+  		Response<UsuarioDTO> response = new Response<>(lista, messages);
+  		return new ResponseEntity<>(response, HttpStatus.OK);
+  		
+  	}
 
     @GetMapping("/{id}")
     public UsuarioDTO getById(@PathVariable UUID id) {
@@ -73,6 +68,7 @@ public final class UsuarioController {
             var result = CrearUsuarioValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
+            	 facade = new UsuarioFacadeImp();
                 facade.crear(dto);
                 response.getMessages().add("El usuario se ha creado correctamente");
             } else {
@@ -106,6 +102,7 @@ public final class UsuarioController {
             var result = ModificarUsuarioValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
+            	facade = new UsuarioFacadeImp();
                 facade.modificar(dto);
                 response.getMessages().add("El usuario se ha modificado correctamente");
             } else {
@@ -136,6 +133,7 @@ public final class UsuarioController {
         try {
             UsuarioDTO dto = new UsuarioDTO();
             dto.setIdentificador(id);
+            facade = new UsuarioFacadeImp();
             facade.eliminar(dto);
             response.getMessages().add("La reserva se ha eliminado/cancelado correctamente");
         } catch (final CompuconnectException exception) {

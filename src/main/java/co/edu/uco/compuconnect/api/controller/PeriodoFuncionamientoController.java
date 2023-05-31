@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.api.validator.periodofuncionamiento.CrearPeriodoFuncionamientoValidation;
 import co.edu.uco.compuconnect.api.validator.periodofuncionamiento.ModificarPeriodoFuncionamientoValidation;
+import co.edu.uco.compuconnect.business.facade.imp.DetalleReservaFacadeImp;
 import co.edu.uco.compuconnect.business.facade.imp.PeriodoFuncionamientoFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
+import co.edu.uco.compuconnect.dto.DetalleReservaDTO;
 import co.edu.uco.compuconnect.dto.PeriodoFuncionamientoDTO;
 
 @RestController
@@ -31,9 +33,6 @@ public final class PeriodoFuncionamientoController {
 	private Logger log = LoggerFactory.getLogger(PeriodoFuncionamientoController.class);
     private PeriodoFuncionamientoFacadeImp facade;
 
-    public PeriodoFuncionamientoController() {
-        facade = new PeriodoFuncionamientoFacadeImp();
-    }
 
     @GetMapping("/dummy")
     public PeriodoFuncionamientoDTO dummy() {
@@ -41,21 +40,19 @@ public final class PeriodoFuncionamientoController {
     }
 
     @GetMapping
-    public ResponseEntity<Response<PeriodoFuncionamientoDTO>> list() {
-        List<PeriodoFuncionamientoDTO> lista = new ArrayList<>();
-        lista.add(PeriodoFuncionamientoDTO.create());
-        lista.add(PeriodoFuncionamientoDTO.create());
-        lista.add(PeriodoFuncionamientoDTO.create());
-        lista.add(PeriodoFuncionamientoDTO.create());
-        lista.add(PeriodoFuncionamientoDTO.create());
+	public ResponseEntity<Response<PeriodoFuncionamientoDTO>> list(@RequestBody PeriodoFuncionamientoDTO dto) {
+		
+		facade = new PeriodoFuncionamientoFacadeImp();
+		List<PeriodoFuncionamientoDTO> lista = facade.consultar(dto);
+		
+		List<String> messages = new ArrayList<>();
+		messages.add("Agendas reserva consultados correctamente");
+		
+		Response<PeriodoFuncionamientoDTO> response = new Response<>(lista, messages);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+	}
 
-        List<String> messages = new ArrayList<>();
-        messages.add("Consulta exitosa");
-
-        Response<PeriodoFuncionamientoDTO> response = new Response<>(lista, messages);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
     @GetMapping("/{id}")
     public PeriodoFuncionamientoDTO getById(@PathVariable UUID id) {
@@ -71,6 +68,7 @@ public final class PeriodoFuncionamientoController {
             var result = CrearPeriodoFuncionamientoValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
+            	facade = new PeriodoFuncionamientoFacadeImp();
                 facade.crear(dto);
                 response.getMessages().add("El periodo funcionamiento se ha creado correctamente");
             } else {
@@ -104,6 +102,7 @@ public final class PeriodoFuncionamientoController {
             var result = ModificarPeriodoFuncionamientoValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
+            	facade = new PeriodoFuncionamientoFacadeImp();
                 facade.modificar(dto);
                 response.getMessages().add("El periodo funcionamiento se ha actualizado correctamente");
             } else {
@@ -134,6 +133,7 @@ public final class PeriodoFuncionamientoController {
         try {
             PeriodoFuncionamientoDTO dto = new PeriodoFuncionamientoDTO();
             dto.setIdentificador(id);
+            facade = new PeriodoFuncionamientoFacadeImp();
             facade.eliminar(dto);
             response.getMessages().add("La agenda se ha eliminado correctamente");
         } catch (final CompuconnectException exception) {

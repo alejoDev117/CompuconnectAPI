@@ -22,8 +22,10 @@ import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.api.validator.reserva.GenerarReservaValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.ModificarReservaValidation;
 import co.edu.uco.compuconnect.business.facade.ReservaFacade;
+import co.edu.uco.compuconnect.business.facade.imp.PeriodoFuncionamientoFacadeImp;
 import co.edu.uco.compuconnect.business.facade.imp.ReservaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
+import co.edu.uco.compuconnect.dto.PeriodoFuncionamientoDTO;
 import co.edu.uco.compuconnect.dto.ReservaDTO;
 
 
@@ -35,31 +37,25 @@ public final class ReservaController {
 	private Logger log = LoggerFactory.getLogger(ReservaController.class);
     private ReservaFacade facade;
 
-    public ReservaController() {
-        facade = new ReservaFacadeImp();
-    }
-
+  
     @GetMapping("/dummy")
     public ReservaDTO dummy() {
         return ReservaDTO.create();
     }
 
     @GetMapping
-    public ResponseEntity<Response<ReservaDTO>> list(@RequestParam ReservaDTO dto) {
-        List<ReservaDTO> lista = new ArrayList<>();
-        lista.add(ReservaDTO.create());
-        lista.add(ReservaDTO.create());
-        lista.add(ReservaDTO.create());
-        lista.add(ReservaDTO.create());
-        lista.add(ReservaDTO.create());
-
-        List<String> messages = new ArrayList<>();
-        messages.add("Reservas consultadas exitosamente");
-
-        Response<ReservaDTO> response = new Response<>(lista, messages);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+	public ResponseEntity<Response<ReservaDTO>> list(@RequestBody ReservaDTO dto) {
+		
+		facade = new ReservaFacadeImp();
+		List<ReservaDTO> lista = facade.consultar(dto);
+		
+		List<String> messages = new ArrayList<>();
+		messages.add("Agendas reserva consultados correctamente");
+		
+		Response<ReservaDTO> response = new Response<>(lista, messages);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+	}
 
     @GetMapping("/{id}")
     public ReservaDTO listById(@PathVariable UUID id) {
@@ -75,6 +71,7 @@ public final class ReservaController {
             var result = GenerarReservaValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
+            	facade = new ReservaFacadeImp();
                 facade.generar(dto);
                 response.getMessages().add("La reserva se ha generado correctamente");
             } else {
@@ -108,6 +105,7 @@ public final class ReservaController {
             var result = ModificarReservaValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
+            	facade = new ReservaFacadeImp();
                 facade.modificar(dto);
                 response.getMessages().add("La reserva se ha actualizado correctamente");
             } else {
@@ -138,6 +136,7 @@ public final class ReservaController {
         try {
             ReservaDTO dto = new ReservaDTO();
             dto.setIdentificador(id);
+            facade = new ReservaFacadeImp();
             facade.cancelar(dto);
             response.getMessages().add("La reserva se ha eliminado/cancelado correctamente");
         } catch (final CompuconnectException exception) {

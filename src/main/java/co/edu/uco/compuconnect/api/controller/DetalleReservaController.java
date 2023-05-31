@@ -21,8 +21,10 @@ import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.api.validator.detallereserva.CrearDetalleReservaValidation;
 import co.edu.uco.compuconnect.api.validator.detallereserva.ModificarDetalleReservaValidation;
 import co.edu.uco.compuconnect.business.facade.DetalleReservaFacade;
+import co.edu.uco.compuconnect.business.facade.imp.AgendaReservaFacadeImp;
 import co.edu.uco.compuconnect.business.facade.imp.DetalleReservaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
+import co.edu.uco.compuconnect.dto.AgendaReservaDTO;
 import co.edu.uco.compuconnect.dto.DetalleReservaDTO;
 
 @RestController
@@ -32,9 +34,6 @@ public final class DetalleReservaController {
 	private Logger log = LoggerFactory.getLogger(DetalleReservaController.class);
     private DetalleReservaFacade facade;
 
-    public DetalleReservaController() {
-        facade = new DetalleReservaFacadeImp();
-    }
 
     @GetMapping("/dummy")
     public DetalleReservaDTO dummy() {
@@ -42,21 +41,18 @@ public final class DetalleReservaController {
     }
 
     @GetMapping
-    public ResponseEntity<Response<DetalleReservaDTO>> list() {
-        List<DetalleReservaDTO> lista = new ArrayList<>();
-        lista.add(DetalleReservaDTO.create());
-        lista.add(DetalleReservaDTO.create());
-        lista.add(DetalleReservaDTO.create());
-        lista.add(DetalleReservaDTO.create());
-        lista.add(DetalleReservaDTO.create());
-
-        List<String> messages = new ArrayList<>();
-        messages.add("Consulta exitosa");
-
-        Response<DetalleReservaDTO> response = new Response<>(lista, messages);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+	public ResponseEntity<Response<DetalleReservaDTO>> list(@RequestBody DetalleReservaDTO dto) {
+		
+		facade = new DetalleReservaFacadeImp();
+		List<DetalleReservaDTO> lista = facade.consultar(dto);
+		
+		List<String> messages = new ArrayList<>();
+		messages.add("Agendas reserva consultados correctamente");
+		
+		Response<DetalleReservaDTO> response = new Response<>(lista, messages);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+	}
 
     @GetMapping("/{id}")
     public DetalleReservaDTO getById(@PathVariable UUID id) {
@@ -72,6 +68,7 @@ public final class DetalleReservaController {
             var result = CrearDetalleReservaValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
+            	facade = new DetalleReservaFacadeImp();
                 facade.crear(dto);
                 response.getMessages().add("El detalle de reserva se ha creado correctamente");
             } else {
@@ -105,6 +102,7 @@ public final class DetalleReservaController {
             var result = ModificarDetalleReservaValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
+            	facade = new DetalleReservaFacadeImp();
                 facade.modificar(dto);
                 response.getMessages().add("El detalle reserva se ha actualizado correctamente");
             } else {
@@ -135,6 +133,7 @@ public final class DetalleReservaController {
         try {
             DetalleReservaDTO dto = new DetalleReservaDTO();
             dto.setIdentificador(id);
+            facade = new DetalleReservaFacadeImp();
             facade.eliminar(dto);
             response.getMessages().add("El detalle reserva se ha eliminado correctamente");
         } catch (final CompuconnectException exception) {

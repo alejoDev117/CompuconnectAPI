@@ -9,13 +9,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.business.facade.FrecuenciaFacade;
+import co.edu.uco.compuconnect.business.facade.imp.DetalleReservaFacadeImp;
 import co.edu.uco.compuconnect.business.facade.imp.FrecuenciaFacadeImp;
+import co.edu.uco.compuconnect.dto.DetalleReservaDTO;
 import co.edu.uco.compuconnect.dto.FrecuenciaDTO;
 
 @RestController
@@ -24,9 +27,6 @@ public final class FrecuenciaController {
 
     private FrecuenciaFacade facade;
 
-    public FrecuenciaController() {
-        facade = new FrecuenciaFacadeImp();
-    }
 
     @GetMapping("/dummy")
     public FrecuenciaDTO dummy() {
@@ -34,21 +34,19 @@ public final class FrecuenciaController {
     }
 
     @GetMapping
-    public ResponseEntity<Response<FrecuenciaDTO>> list(@RequestParam FrecuenciaDTO dto) {
-        List<FrecuenciaDTO> lista = new ArrayList<>();
-        lista.add(FrecuenciaDTO.create());
-        lista.add(FrecuenciaDTO.create());
-        lista.add(FrecuenciaDTO.create());
-        lista.add(FrecuenciaDTO.create());
-        lista.add(FrecuenciaDTO.create());
+	public ResponseEntity<Response<FrecuenciaDTO>> list(@RequestBody FrecuenciaDTO dto) {
+		
+		facade = new FrecuenciaFacadeImp();
+		List<FrecuenciaDTO> lista = facade.consultar(dto);
+		
+		List<String> messages = new ArrayList<>();
+		messages.add("Agendas reserva consultados correctamente");
+		
+		Response<FrecuenciaDTO> response = new Response<>(lista, messages);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+	}
 
-        List<String> messages = new ArrayList<>();
-        messages.add("Frecuencias consultadas exitosamente");
-
-        Response<FrecuenciaDTO> response = new Response<>(lista, messages);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
     @GetMapping("/{id}")
     public FrecuenciaDTO listById(@PathVariable UUID id) {

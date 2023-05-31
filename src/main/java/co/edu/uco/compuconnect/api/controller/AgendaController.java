@@ -22,8 +22,10 @@ import co.edu.uco.compuconnect.api.validator.agenda.ActualizarAgendaValidation;
 import co.edu.uco.compuconnect.api.validator.agenda.CrearAgendaValidation;
 import co.edu.uco.compuconnect.business.facade.AgendaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.AgendaFacadeImp;
+import co.edu.uco.compuconnect.business.facade.imp.CentroInformaticaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
 import co.edu.uco.compuconnect.dto.AgendaDTO;
+import co.edu.uco.compuconnect.dto.CentroInformaticaDTO;
 
 @RestController
 @RequestMapping("compuconnect/api/v1/agenda")
@@ -33,31 +35,26 @@ public final class AgendaController {
 	private Logger log = LoggerFactory.getLogger(AgendaController.class);
     private AgendaFacade facade;
 
-    public AgendaController() {
-        facade = new AgendaFacadeImp();
-    }
 
     @GetMapping("/dummy")
     public AgendaDTO dummy() {
         return AgendaDTO.create();
     }
 
-    @GetMapping
-    public ResponseEntity<Response<AgendaDTO>> list() {
-        List<AgendaDTO> lista = new ArrayList<>();
-        lista.add(AgendaDTO.create());
-        lista.add(AgendaDTO.create());
-        lista.add(AgendaDTO.create());
-        lista.add(AgendaDTO.create());
-        lista.add(AgendaDTO.create());
+	@GetMapping
+	public ResponseEntity<Response<AgendaDTO>> list(@RequestBody AgendaDTO dto) {
+		
+		facade = new AgendaFacadeImp();
+		List<AgendaDTO> lista = facade.consultar(dto);
+		
+		List<String> messages = new ArrayList<>();
+		messages.add("Agendas consultadas correctamente");
+		
+		Response<AgendaDTO> response = new Response<>(lista, messages);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+	}
 
-        List<String> messages = new ArrayList<>();
-        messages.add("consulta exitosa");
-
-        Response<AgendaDTO> response = new Response<>(lista, messages);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
     @GetMapping("/{id}")
     public AgendaDTO getById(@PathVariable UUID id) {
@@ -73,6 +70,7 @@ public final class AgendaController {
             var result = CrearAgendaValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
+            	facade = new AgendaFacadeImp();
                 facade.registrar(dto);
                 response.getMessages().add("La agenda se ha creado correctamente");
             } else {

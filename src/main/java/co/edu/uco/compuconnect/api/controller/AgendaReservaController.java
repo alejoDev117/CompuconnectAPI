@@ -31,31 +31,24 @@ public final class AgendaReservaController {
     private AgendaReservaFacade facade;
     
 
-    public AgendaReservaController() {
-        facade = new AgendaReservaFacadeImp();
-    }
-
     @GetMapping("/dummy")
     public AgendaReservaDTO dummy() {
         return AgendaReservaDTO.create();
     }
 
-    @GetMapping
-    public ResponseEntity<Response<AgendaReservaDTO>> list() {
-        List<AgendaReservaDTO> lista = new ArrayList<>();
-        lista.add(AgendaReservaDTO.create());
-        lista.add(AgendaReservaDTO.create());
-        lista.add(AgendaReservaDTO.create());
-        lista.add(AgendaReservaDTO.create());
-        lista.add(AgendaReservaDTO.create());
-
-        List<String> messages = new ArrayList<>();
-        messages.add("Consulta exitosa");
-
-        Response<AgendaReservaDTO> response = new Response<>(lista, messages);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+	@GetMapping
+	public ResponseEntity<Response<AgendaReservaDTO>> list(@RequestBody AgendaReservaDTO dto) {
+		
+		facade = new AgendaReservaFacadeImp();
+		List<AgendaReservaDTO> lista = facade.consultar(dto);
+		
+		List<String> messages = new ArrayList<>();
+		messages.add("Agendas reserva consultados correctamente");
+		
+		Response<AgendaReservaDTO> response = new Response<>(lista, messages);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+	}
 
     @GetMapping("/{id}")
     public AgendaReservaDTO getById(@PathVariable UUID id) {
@@ -71,6 +64,7 @@ public final class AgendaReservaController {
             var result = CrearAgendaReservaValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
+            	facade = new AgendaReservaFacadeImp();
                 facade.crear(dto);
                 response.getMessages().add("La agenda de reserva se ha creado correctamente");
             } else {
@@ -102,6 +96,7 @@ public final class AgendaReservaController {
         try {
             AgendaReservaDTO dto = new AgendaReservaDTO();
             dto.setIdentificador(id);
+            facade = new AgendaReservaFacadeImp();
             facade.eliminar(dto);
             response.getMessages().add("La agenda reserva se ha eliminado correctamente");
         } catch (final CompuconnectException exception) {

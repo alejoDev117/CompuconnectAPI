@@ -23,137 +23,137 @@ import co.edu.uco.compuconnect.api.validator.centroinformatica.ModificarCentroIn
 import co.edu.uco.compuconnect.business.facade.CentroInformaticaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.CentroInformaticaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
-import co.edu.uco.compuconnect.crosscutting.utils.Messages.CentroInformaticaControllerMessage;
+import co.edu.uco.compuconnect.dto.AgendaDTO;
 import co.edu.uco.compuconnect.dto.CentroInformaticaDTO;
 
 @RestController
-@RequestMapping("compuconnect/api/v1/centroinformatica")
+@RequestMapping("compuconnect/api/v2/centroinformatica")
 public final class CentroInformaticaController {
 
-	
 	private Logger log = LoggerFactory.getLogger(CentroInformaticaController.class);
-    private CentroInformaticaFacade facade;
+	private CentroInformaticaFacade facade;
 
-    public CentroInformaticaController() {
-        facade = new CentroInformaticaFacadeImp();
-    }
+	@GetMapping("/dummy")
+	public CentroInformaticaDTO dummy() {
+		return CentroInformaticaDTO.create();
+	}
 
-    @GetMapping("/dummy")
-    public CentroInformaticaDTO dummy() {
-        return CentroInformaticaDTO.create();
-    }
+	@GetMapping
+	public ResponseEntity<Response<CentroInformaticaDTO>> list(@RequestBody CentroInformaticaDTO dto) {
+		
+		facade = new CentroInformaticaFacadeImp();
+		List<CentroInformaticaDTO> lista = facade.read(dto);
+		
+		List<String> messages = new ArrayList<>();
+		messages.add("Centros de informatica consultados correctamente");
+		
+		Response<CentroInformaticaDTO> response = new Response<>(lista, messages);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+	}
 
-    @GetMapping
-    public ResponseEntity<Response<CentroInformaticaDTO>> list() {
-        List<CentroInformaticaDTO> lista = new ArrayList<>();
-        lista.add(CentroInformaticaDTO.create());
-        lista.add(CentroInformaticaDTO.create());
-        lista.add(CentroInformaticaDTO.create());
-        lista.add(CentroInformaticaDTO.create());
-        lista.add(CentroInformaticaDTO.create());
 
-        List<String> messages = new ArrayList<>();
-        messages.add(CentroInformaticaControllerMessage.GET_RESPONSE_SUCCESSFULLY);
+	@GetMapping("/{id}")
+	public CentroInformaticaDTO getById(@PathVariable UUID id) {
+		return CentroInformaticaDTO.create().setIdentificador(id);
+	}
 
-        Response<CentroInformaticaDTO> response = new Response<>(lista, messages);
+	@PostMapping
+	public ResponseEntity<Response<CentroInformaticaDTO>> create(@RequestBody CentroInformaticaDTO dto) {
+		var statusCode = HttpStatus.OK;
+		var response = new Response<CentroInformaticaDTO>();
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+		try {
+			var result = CrearCentroInformaticaValidation.validate(dto);
 
-    @GetMapping("/{id}")
-    public CentroInformaticaDTO getById(@PathVariable UUID id) {
-        return CentroInformaticaDTO.create().setIdentificador(id);
-    }
+			if (result.getMessages().isEmpty()) {
+				facade = new CentroInformaticaFacadeImp();
+				facade.create(dto);
+				response.getMessages().add("El centro de Informática se ha creado correctamente");
+			} else {
+				statusCode = HttpStatus.BAD_REQUEST;
+				response.setMessages(result.getMessages());
+			}
 
-    @PostMapping
-    public ResponseEntity<Response<CentroInformaticaDTO>> create(@RequestBody CentroInformaticaDTO dto) {
-        var statusCode = HttpStatus.OK;
-        var response = new Response<CentroInformaticaDTO>();
+		} catch (final CompuconnectException exception) {
+			statusCode = HttpStatus.BAD_REQUEST;
+			response.getMessages().add(exception.getUserMessage());
+			log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
 
-        try {
-            var result = CrearCentroInformaticaValidation.validate(dto);
+			exception.printStackTrace();
+		} catch (final Exception exception) {
+			statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+			response.getMessages().add(
+					"Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+			log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+			exception.printStackTrace();
+		}
 
-            if (result.getMessages().isEmpty()) {
-                facade.create(dto);
-                response.getMessages().add("El centro de Informática se ha creado correctamente");
-            } else {
-                statusCode = HttpStatus.BAD_REQUEST;
-                response.setMessages(result.getMessages());
-            }
+		return new ResponseEntity<>(response, statusCode);
+	}
 
-        } catch (final CompuconnectException exception) {
-            statusCode = HttpStatus.BAD_REQUEST;
-            response.getMessages().add(exception.getUserMessage());
-            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
-      
-            exception.printStackTrace();
-        } catch (final Exception exception) {
-            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
-            exception.printStackTrace();
-        }
+	@PutMapping("/{id}")
+	public ResponseEntity<Response<CentroInformaticaDTO>> update(@PathVariable UUID id,
+			@RequestBody CentroInformaticaDTO dto) {
+		var statusCode = HttpStatus.OK;
+		var response = new Response<CentroInformaticaDTO>();
 
-        return new ResponseEntity<>(response, statusCode);
-    }
+		try {
+			dto.setIdentificador(id);
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Response<CentroInformaticaDTO>> update(@PathVariable UUID id, @RequestBody CentroInformaticaDTO dto) {
-        var statusCode = HttpStatus.OK;
-        var response = new Response<CentroInformaticaDTO>();
+			var result = ModificarCentroInformaticaValidation.validate(dto);
 
-        try {
-            dto.setIdentificador(id);
+			if (result.getMessages().isEmpty()) {
+				facade = new CentroInformaticaFacadeImp();
+				facade.update(dto);
+				response.getMessages().add("El centro informatica se ha actualizado correctamente");
+			} else {
+				statusCode = HttpStatus.BAD_REQUEST;
+				response.setMessages(result.getMessages());
+			}
 
-            var result = ModificarCentroInformaticaValidation.validate(dto);
+		} catch (final CompuconnectException exception) {
+			statusCode = HttpStatus.BAD_REQUEST;
+			response.getMessages().add(exception.getUserMessage());
+			log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
+			exception.printStackTrace();
+		} catch (final Exception exception) {
+			statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+			response.getMessages().add(
+					"Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+			log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+			exception.printStackTrace();
+		}
 
-            if (result.getMessages().isEmpty()) {
-                facade.update(dto);
-                response.getMessages().add("El centro informatica se ha actualizado correctamente");
-            } else {
-                statusCode = HttpStatus.BAD_REQUEST;
-                response.setMessages(result.getMessages());
-            }
+		return new ResponseEntity<>(response, statusCode);
+	}
 
-        } catch (final CompuconnectException exception) {
-            statusCode = HttpStatus.BAD_REQUEST;
-            response.getMessages().add(exception.getUserMessage());
-            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
-            exception.printStackTrace();
-        } catch (final Exception exception) {
-            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
-            exception.printStackTrace();
-        }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Response<String>> delete(@PathVariable UUID id) {
+		var statusCode = HttpStatus.OK;
+		var response = new Response<String>();
 
-        return new ResponseEntity<>(response, statusCode);
-    }
+		try {
+			CentroInformaticaDTO dto = new CentroInformaticaDTO();
+			dto.setIdentificador(id);
+			facade = new CentroInformaticaFacadeImp();
+			facade.delete(dto);
+			response.getMessages().add("El centro de Informática se ha eliminado correctamente");
+		} catch (final CompuconnectException exception) {
+			statusCode = HttpStatus.BAD_REQUEST;
+			response.getMessages().add(exception.getUserMessage());
+			log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Response<String>> delete(@PathVariable UUID id) {
-        var statusCode = HttpStatus.OK;
-        var response = new Response<String>();
+			exception.printStackTrace();
+		} catch (final Exception exception) {
+			statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+			response.getMessages().add(
+					"Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
+			log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+			exception.printStackTrace();
+		}
 
-        try {
-            CentroInformaticaDTO dto = new CentroInformaticaDTO();
-            dto.setIdentificador(id);
-            facade.delete(dto);
-            response.getMessages().add("El centro de Informática se ha eliminado correctamente");
-        } catch (final CompuconnectException exception) {
-            statusCode = HttpStatus.BAD_REQUEST;
-            response.getMessages().add(exception.getUserMessage());
-            log.error(exception.getType().toString().concat(exception.getTechnicalMessage()), exception);
-      
-            exception.printStackTrace();
-        } catch (final Exception exception) {
-            statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
-            exception.printStackTrace();
-        }
-
-        return new ResponseEntity<>(response, statusCode);
-    }
+		return new ResponseEntity<>(response, statusCode);
+	}
 
 }
