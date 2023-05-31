@@ -22,10 +22,8 @@ import co.edu.uco.compuconnect.api.validator.agenda.ActualizarAgendaValidation;
 import co.edu.uco.compuconnect.api.validator.agenda.CrearAgendaValidation;
 import co.edu.uco.compuconnect.business.facade.AgendaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.AgendaFacadeImp;
-import co.edu.uco.compuconnect.business.facade.imp.CentroInformaticaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
 import co.edu.uco.compuconnect.dto.AgendaDTO;
-import co.edu.uco.compuconnect.dto.CentroInformaticaDTO;
 
 @RestController
 @RequestMapping("compuconnect/api/v1/agenda")

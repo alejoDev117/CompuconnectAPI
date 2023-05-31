@@ -23,7 +23,6 @@ import co.edu.uco.compuconnect.api.validator.centroinformatica.ModificarCentroIn
 import co.edu.uco.compuconnect.business.facade.CentroInformaticaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.CentroInformaticaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
-import co.edu.uco.compuconnect.dto.AgendaDTO;
 import co.edu.uco.compuconnect.dto.CentroInformaticaDTO;
 
 @RestController

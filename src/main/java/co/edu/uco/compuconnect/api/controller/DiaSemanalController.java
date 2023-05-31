@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.business.facade.DiaSemanalFacade;
-import co.edu.uco.compuconnect.business.facade.imp.DetalleReservaFacadeImp;
 import co.edu.uco.compuconnect.business.facade.imp.DiaSemanalFacadeImp;
-import co.edu.uco.compuconnect.dto.DetalleReservaDTO;
 import co.edu.uco.compuconnect.dto.DiaSemanalDTO;
 import java.util.List;
 import java.util.ArrayList;

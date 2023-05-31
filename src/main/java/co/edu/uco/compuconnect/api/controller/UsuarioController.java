@@ -22,10 +22,8 @@ import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.api.validator.usuario.CrearUsuarioValidation;
 import co.edu.uco.compuconnect.api.validator.usuario.ModificarUsuarioValidation;
 import co.edu.uco.compuconnect.business.facade.UsuarioFacade;
-import co.edu.uco.compuconnect.business.facade.imp.TipoUsuarioFacadeImp;
 import co.edu.uco.compuconnect.business.facade.imp.UsuarioFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
-import co.edu.uco.compuconnect.dto.TipoUsuarioDTO;
 import co.edu.uco.compuconnect.dto.UsuarioDTO;
 
 @RestController

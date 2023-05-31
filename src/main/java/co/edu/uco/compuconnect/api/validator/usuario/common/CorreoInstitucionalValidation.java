@@ -2,7 +2,6 @@ package co.edu.uco.compuconnect.api.validator.usuario.common;
 
 import co.edu.uco.compuconnect.api.validator.Result;
 import co.edu.uco.compuconnect.api.validator.Validation;
-import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilText;
 
 public class CorreoInstitucionalValidation implements Validation<String> {

@@ -1,7 +1,5 @@
 package co.edu.uco.compuconnect.api.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.business.facade.EstadoPeriodoFuncionamientoFacade;
-import co.edu.uco.compuconnect.business.facade.imp.DetalleReservaFacadeImp;
 import co.edu.uco.compuconnect.business.facade.imp.EstadoPeriodoFuncionamientoFacadeImp;
-import co.edu.uco.compuconnect.dto.CentroInformaticaDTO;
-import co.edu.uco.compuconnect.dto.DetalleReservaDTO;
 import co.edu.uco.compuconnect.dto.EstadoPeriodoFuncionamientoDTO;
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +20,6 @@ import java.util.ArrayList;
 @RequestMapping("compuconnect/api/v1/estadoperiodofuncionamiento")
 public final class EstadoPeriodoFuncionamientoController {
 
-    private final Logger log = LoggerFactory.getLogger(EstadoPeriodoFuncionamientoController.class);
     private EstadoPeriodoFuncionamientoFacade facade;
 
     

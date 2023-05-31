@@ -3,7 +3,6 @@ package co.edu.uco.compuconnect.api.validator.agenda.common;
 import co.edu.uco.compuconnect.api.validator.Result;
 import co.edu.uco.compuconnect.api.validator.Validation;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
-import co.edu.uco.compuconnect.dto.CentroInformaticaDTO;
 import co.edu.uco.compuconnect.dto.PeriodoFuncionamientoDTO;
 
 public class PeriodoFuncionamientoValidation implements Validation<PeriodoFuncionamientoDTO>{

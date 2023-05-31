@@ -1,13 +1,9 @@
 package co.edu.uco.compuconnect.api.validator.reserva.common;
 
-import java.util.Date;
-import java.util.UUID;
-
 import co.edu.uco.compuconnect.api.validator.Result;
 import co.edu.uco.compuconnect.api.validator.Validation;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilText;
-import co.edu.uco.compuconnect.crosscutting.utils.UtilUUID;
 import co.edu.uco.compuconnect.dto.TipoReservaDTO;
 
 public class TipoReservaValidation implements Validation<TipoReservaDTO> {

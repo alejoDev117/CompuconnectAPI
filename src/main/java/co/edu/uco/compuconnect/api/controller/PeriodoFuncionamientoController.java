@@ -20,10 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.api.validator.periodofuncionamiento.CrearPeriodoFuncionamientoValidation;
 import co.edu.uco.compuconnect.api.validator.periodofuncionamiento.ModificarPeriodoFuncionamientoValidation;
-import co.edu.uco.compuconnect.business.facade.imp.DetalleReservaFacadeImp;
 import co.edu.uco.compuconnect.business.facade.imp.PeriodoFuncionamientoFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
-import co.edu.uco.compuconnect.dto.DetalleReservaDTO;
 import co.edu.uco.compuconnect.dto.PeriodoFuncionamientoDTO;
 
 @RestController

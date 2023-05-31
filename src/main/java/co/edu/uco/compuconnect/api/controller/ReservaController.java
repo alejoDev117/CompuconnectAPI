@@ -22,10 +22,8 @@ import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.api.validator.reserva.GenerarReservaValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.ModificarReservaValidation;
 import co.edu.uco.compuconnect.business.facade.ReservaFacade;
-import co.edu.uco.compuconnect.business.facade.imp.PeriodoFuncionamientoFacadeImp;
 import co.edu.uco.compuconnect.business.facade.imp.ReservaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
-import co.edu.uco.compuconnect.dto.PeriodoFuncionamientoDTO;
 import co.edu.uco.compuconnect.dto.ReservaDTO;
 
 
