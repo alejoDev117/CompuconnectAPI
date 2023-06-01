@@ -44,7 +44,6 @@ public final class AgendaController {
 		
 		facade = new AgendaFacadeImp();
 		List<AgendaDTO> lista = facade.consultar(dto);
-		
 		List<String> messages = new ArrayList<>();
 		messages.add("Agendas consultadas correctamente");
 		
@@ -103,6 +102,7 @@ public final class AgendaController {
             var result = ActualizarAgendaValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
+            	facade = new AgendaFacadeImp();
                 facade.modificar(dto);
                 response.getMessages().add("La agenda se ha actualizado correctamente");
             } else {

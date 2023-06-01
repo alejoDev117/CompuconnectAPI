@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uco.compuconnect.api.controller.response.Response;
@@ -58,7 +57,7 @@ public final class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Response<UsuarioDTO>> create(@RequestParam UsuarioDTO dto) {
+    public ResponseEntity<Response<UsuarioDTO>> create(@RequestBody UsuarioDTO dto) {
         var statusCode = HttpStatus.OK;
         var response = new Response<UsuarioDTO>();
 
@@ -66,7 +65,7 @@ public final class UsuarioController {
             var result = CrearUsuarioValidation.validate(dto);
 
             if (result.getMessages().isEmpty()) {
-            	 facade = new UsuarioFacadeImp();
+            	facade = new UsuarioFacadeImp();
                 facade.crear(dto);
                 response.getMessages().add("El usuario se ha creado correctamente");
             } else {
