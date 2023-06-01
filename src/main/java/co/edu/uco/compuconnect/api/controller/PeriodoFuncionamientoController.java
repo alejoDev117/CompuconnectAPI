@@ -25,7 +25,7 @@ import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
 import co.edu.uco.compuconnect.dto.PeriodoFuncionamientoDTO;
 
 @RestController
-@RequestMapping("compuconnect/api/v1/periodo-funcionamiento")
+@RequestMapping("compuconnect/api/v1/periodofuncionamiento")
 public final class PeriodoFuncionamientoController {
 
 	private Logger log = LoggerFactory.getLogger(PeriodoFuncionamientoController.class);
@@ -44,7 +44,7 @@ public final class PeriodoFuncionamientoController {
 		List<PeriodoFuncionamientoDTO> lista = facade.consultar(dto);
 		
 		List<String> messages = new ArrayList<>();
-		messages.add("Agendas reserva consultados correctamente");
+		messages.add("Periodo funcionamiento consultados correctamente");
 		
 		Response<PeriodoFuncionamientoDTO> response = new Response<>(lista, messages);
 		return new ResponseEntity<>(response, HttpStatus.OK);

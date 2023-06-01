@@ -48,7 +48,7 @@ public final class ReservaController {
 		List<ReservaDTO> lista = facade.consultar(dto);
 		
 		List<String> messages = new ArrayList<>();
-		messages.add("Agendas reserva consultados correctamente");
+		messages.add("Reserva consultados correctamente");
 		
 		Response<ReservaDTO> response = new Response<>(lista, messages);
 		return new ResponseEntity<>(response, HttpStatus.OK);

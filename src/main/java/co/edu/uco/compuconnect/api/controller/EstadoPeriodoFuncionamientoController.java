@@ -35,7 +35,7 @@ public final class EstadoPeriodoFuncionamientoController {
 		List<EstadoPeriodoFuncionamientoDTO> lista = facade.consultar(dto);
 		
 		List<String> messages = new ArrayList<>();
-		messages.add("Agendas reserva consultados correctamente");
+		messages.add("Estado periodo funcionamiento consultados correctamente");
 		
 		Response<EstadoPeriodoFuncionamientoDTO> response = new Response<>(lista, messages);
 		return new ResponseEntity<>(response, HttpStatus.OK);

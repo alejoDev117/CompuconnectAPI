@@ -26,7 +26,7 @@ import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
 import co.edu.uco.compuconnect.dto.DetalleReservaDTO;
 
 @RestController
-@RequestMapping("compuconnect/api/v1/detalle-reserva")
+@RequestMapping("compuconnect/api/v1/detallereserva")
 public final class DetalleReservaController {
 
 	private Logger log = LoggerFactory.getLogger(DetalleReservaController.class);
@@ -45,7 +45,7 @@ public final class DetalleReservaController {
 		List<DetalleReservaDTO> lista = facade.consultar(dto);
 		
 		List<String> messages = new ArrayList<>();
-		messages.add("Agendas reserva consultados correctamente");
+		messages.add("detalle reserva consultados correctamente");
 		
 		Response<DetalleReservaDTO> response = new Response<>(lista, messages);
 		return new ResponseEntity<>(response, HttpStatus.OK);

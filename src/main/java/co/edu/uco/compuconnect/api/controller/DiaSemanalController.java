@@ -36,7 +36,7 @@ public final class DiaSemanalController {
 		List<DiaSemanalDTO> lista = facade.consultar(dto);
 		
 		List<String> messages = new ArrayList<>();
-		messages.add("Agendas reserva consultados correctamente");
+		messages.add("dia semanal consultados correctamente");
 		
 		Response<DiaSemanalDTO> response = new Response<>(lista, messages);
 		return new ResponseEntity<>(response, HttpStatus.OK);

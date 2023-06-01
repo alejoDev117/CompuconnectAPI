@@ -36,7 +36,7 @@ public final class TipoUsuarioController {
   		List<TipoUsuarioDTO> lista = facade.consultar(dto);
   		
   		List<String> messages = new ArrayList<>();
-  		messages.add("Agendas reserva consultados correctamente");
+  		messages.add("tipo usuarios consultados correctamente");
   		
   		Response<TipoUsuarioDTO> response = new Response<>(lista, messages);
   		return new ResponseEntity<>(response, HttpStatus.OK);

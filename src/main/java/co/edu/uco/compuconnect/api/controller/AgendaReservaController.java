@@ -24,7 +24,7 @@ import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
 import co.edu.uco.compuconnect.dto.AgendaReservaDTO;
 
 @RestController
-@RequestMapping("compuconnect/api/v1/agenda-reserva")
+@RequestMapping("compuconnect/api/v1/agendareserva")
 public final class AgendaReservaController {
 	
 	private Logger log = LoggerFactory.getLogger(AgendaReservaController.class);

@@ -36,7 +36,7 @@ public final class FrecuenciaController {
 		List<FrecuenciaDTO> lista = facade.consultar(dto);
 		
 		List<String> messages = new ArrayList<>();
-		messages.add("Agendas reserva consultados correctamente");
+		messages.add("frecuencia consultados correctamente");
 		
 		Response<FrecuenciaDTO> response = new Response<>(lista, messages);
 		return new ResponseEntity<>(response, HttpStatus.OK);
