@@ -22,11 +22,6 @@ public class FechaInicioValidation implements Validation<Date> {
 
         if (UtilObject.isNull(data)) {
             result.addMessage("La fecha de inicio de la reserva no puede estar vacía");
-        } else {
-            Date currentDate = new Date();
-            if (data.before(currentDate)) {
-                result.addMessage("La fecha de inicio de la reserva no puede ser anterior a la fecha actual");
-            }
         }
 
         return result;

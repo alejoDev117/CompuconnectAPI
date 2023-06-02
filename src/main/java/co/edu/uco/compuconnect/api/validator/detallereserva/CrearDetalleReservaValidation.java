@@ -28,7 +28,6 @@ public class CrearDetalleReservaValidation implements Validation<DetalleReservaD
             result.addMessage("No es posible generar un detalle de reserva con los datos vacíos");
         } else {
             result.addMessages(IdentificadorValidation.validate(data.getIdentificador()).getMessages());
-            result.addMessages(ReservaValidation.validate(data.getReserva()).getMessages());
             result.addMessages(DiaSemanalValidation.validate(data.getDia()).getMessages());
             result.addMessages(HoraInicioValidation.validate(data.getHoraInicio()).getMessages());
             result.addMessages(HoraFinValidation.validate(data.getHorFin()).getMessages());

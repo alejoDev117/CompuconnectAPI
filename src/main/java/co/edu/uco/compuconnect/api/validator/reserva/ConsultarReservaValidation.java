@@ -3,9 +3,10 @@ package co.edu.uco.compuconnect.api.validator.reserva;
 import co.edu.uco.compuconnect.api.validator.Result;
 import co.edu.uco.compuconnect.api.validator.Validation;
 import co.edu.uco.compuconnect.api.validator.generalcommon.IdentificadorValidation;
+import co.edu.uco.compuconnect.api.validator.reserva.common.AgendaValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.AutorValidation;
-import co.edu.uco.compuconnect.api.validator.reserva.common.CentroInformaticaValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.DescripcionValidation;
+import co.edu.uco.compuconnect.api.validator.reserva.common.DetalleReservaValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.FechaFinValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.FechaInicioValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.FrecuenciaValidation;
@@ -34,12 +35,13 @@ public final class ConsultarReservaValidation implements Validation<ReservaDTO> 
         	result.addMessages(IdentificadorValidation.validate(data.getIdentificador()).getMessages());
             result.addMessages(FechaInicioValidation.validate(data.getFechaInicio()).getMessages());
             result.addMessages(FechaFinValidation.validate(data.getFechaFin()).getMessages());
-            result.addMessages(CentroInformaticaValidation.validate(data.getCentroInformatica()).getMessages());
+            result.addMessages(AgendaValidation.validate(data.getAgenda()).getMessages());
             result.addMessages(TipoReservaValidation.validate(data.getTipoReserva()).getMessages());
             result.addMessages(AutorValidation.validate(data.getAutor()).getMessages());
             result.addMessages(DescripcionValidation.validate(data.getDescripcion()).getMessages());
             result.addMessages(HoraCreacionValidation.validate(data.getHoraCreacion()).getMessages());
             result.addMessages(FrecuenciaValidation.validate(data.getFrecuencia()).getMessages());
+            result.addMessages(DetalleReservaValidation.validate(data.getDetalle()).getMessages());
         }
 
         return result;

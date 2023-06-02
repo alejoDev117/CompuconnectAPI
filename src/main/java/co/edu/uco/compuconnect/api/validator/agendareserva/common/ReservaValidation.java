@@ -41,14 +41,17 @@ public class ReservaValidation implements Validation<ReservaDTO> {
             if (UtilObject.isNull(data.getFrecuencia())) {
                 result.addMessage("La frecuencia de la reserva no puede estar vacía");
             }
-            if (UtilObject.isNull(data.getCentroInformatica())) {
-                result.addMessage("El centro de informática de la reserva no puede estar vacío");
+            if (UtilObject.isNull(data.getAgenda())) {
+                result.addMessage("La agenda de la reserva no puede estar vacío");
             }
             if (UtilText.getUtilText().isNull(data.getDescripcion())) {
                 result.addMessage("La descripción de la reserva no puede estar vacía");
             }
             if (UtilObject.isNull(data.getHoraCreacion())) {
                 result.addMessage("La hora de creación de la reserva no puede estar vacía");
+            }
+            if (UtilObject.isNull(data.getDetalle())) {
+                result.addMessage("El detalle de la reserva no puede estar vacía");
             }
         }
 

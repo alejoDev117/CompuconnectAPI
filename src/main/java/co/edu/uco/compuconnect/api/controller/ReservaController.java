@@ -15,15 +15,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.qos.logback.classic.pattern.Util;
 import co.edu.uco.compuconnect.api.controller.response.Response;
 import co.edu.uco.compuconnect.api.validator.reserva.GenerarReservaValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.ModificarReservaValidation;
 import co.edu.uco.compuconnect.business.facade.ReservaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.ReservaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
+import co.edu.uco.compuconnect.crosscutting.utils.Messages.CentroInformaticaControllerMessage;
+import co.edu.uco.compuconnect.crosscutting.utils.Messages.ReservaControllerMessage;
+import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
 import co.edu.uco.compuconnect.dto.ReservaDTO;
 
 
@@ -48,7 +51,7 @@ public final class ReservaController {
 		List<ReservaDTO> lista = facade.consultar(dto);
 		
 		List<String> messages = new ArrayList<>();
-		messages.add("Reserva consultados correctamente");
+		messages.add(ReservaControllerMessage.CONTROLLER_READ_SUCCESSFUL);
 		
 		Response<ReservaDTO> response = new Response<>(lista, messages);
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -61,7 +64,7 @@ public final class ReservaController {
     }
 
     @PostMapping
-    public ResponseEntity<Response<ReservaDTO>> create(@RequestParam ReservaDTO dto) {
+    public ResponseEntity<Response<ReservaDTO>> create(@RequestBody ReservaDTO dto) {
         var statusCode = HttpStatus.OK;
         var response = new Response<ReservaDTO>();
 
@@ -71,7 +74,7 @@ public final class ReservaController {
             if (result.getMessages().isEmpty()) {
             	facade = new ReservaFacadeImp();
                 facade.generar(dto);
-                response.getMessages().add("La reserva se ha generado correctamente");
+                response.getMessages().add(ReservaControllerMessage.CONTROLLER_CREATE_SUCCESSFUL);
             } else {
                 statusCode = HttpStatus.BAD_REQUEST;
                 response.setMessages(result.getMessages());
@@ -84,8 +87,8 @@ public final class ReservaController {
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            response.getMessages().add(ReservaControllerMessage.CONSOLE_EXCEPTION_TECHNICAL_MESSAGE);
+            log.error(ReservaControllerMessage.CONSOLE_EXCEPTION_USER_MESSAGE);
             exception.printStackTrace();
         }
 
@@ -105,7 +108,7 @@ public final class ReservaController {
             if (result.getMessages().isEmpty()) {
             	facade = new ReservaFacadeImp();
                 facade.modificar(dto);
-                response.getMessages().add("La reserva se ha actualizado correctamente");
+                response.getMessages().add(ReservaControllerMessage.CONTROLLER_UPDATE_SUCCESSFUL);
             } else {
                 statusCode = HttpStatus.BAD_REQUEST;
                 response.setMessages(result.getMessages());
@@ -118,8 +121,8 @@ public final class ReservaController {
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            response.getMessages().add(ReservaControllerMessage.CONSOLE_EXCEPTION_TECHNICAL_MESSAGE);
+            log.error(ReservaControllerMessage.CONSOLE_EXCEPTION_USER_MESSAGE);
             exception.printStackTrace();
         }
 
@@ -136,7 +139,7 @@ public final class ReservaController {
             dto.setIdentificador(id);
             facade = new ReservaFacadeImp();
             facade.cancelar(dto);
-            response.getMessages().add("La reserva se ha eliminado/cancelado correctamente");
+            response.getMessages().add(ReservaControllerMessage.CONTROLLER_CANCEL_SUCCESSFUL);
         } catch (final CompuconnectException exception) {
             statusCode = HttpStatus.BAD_REQUEST;
             response.getMessages().add(exception.getUserMessage());
@@ -145,8 +148,8 @@ public final class ReservaController {
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            response.getMessages().add(ReservaControllerMessage.CONSOLE_EXCEPTION_TECHNICAL_MESSAGE);
+            log.error(ReservaControllerMessage.CONSOLE_EXCEPTION_USER_MESSAGE);
             exception.printStackTrace();
         }
 
