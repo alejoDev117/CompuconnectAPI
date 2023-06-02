@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import co.edu.uco.compuconnect.api.validator.Result;
 import co.edu.uco.compuconnect.api.validator.Validation;
+import co.edu.uco.compuconnect.crosscutting.utils.Messages.AgendaCommonValidation;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
 
 public final class EliminarAgendaValidation implements Validation<UUID> {
@@ -21,7 +22,7 @@ public final class EliminarAgendaValidation implements Validation<UUID> {
         var result = Result.create();
 
         if (UtilObject.isNull(id)) {
-            result.addMessage("No es posible eliminar la agenda con el identificador vacío");
+            result.addMessage(AgendaCommonValidation.ELIMINAR_FAILED);
         }
 
         return result;
