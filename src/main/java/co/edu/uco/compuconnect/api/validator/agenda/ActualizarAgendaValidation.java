@@ -6,6 +6,7 @@ import co.edu.uco.compuconnect.api.validator.agenda.common.NombreValidation;
 import co.edu.uco.compuconnect.api.validator.agenda.common.PeriodoFuncionamientoValidation;
 import co.edu.uco.compuconnect.api.validator.generalcommon.IdentificadorValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.CentroInformaticaValidation;
+import co.edu.uco.compuconnect.crosscutting.utils.Messages.AgendaCommonValidation;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
 import co.edu.uco.compuconnect.dto.AgendaDTO;
 
@@ -24,7 +25,7 @@ public final class ActualizarAgendaValidation implements Validation<AgendaDTO> {
         var result = Result.create();
 
         if (UtilObject.isNull(data)) {
-            result.addMessage("No es posible modificar la agenda con los datos vacíos");
+            result.addMessage(AgendaCommonValidation.ACTUALIZAR_FAILED);
         } else {
         	result.addMessages(IdentificadorValidation.validate(data.getIdentificador()).getMessages());
         	result.addMessages(PeriodoFuncionamientoValidation.validate(data.getPeriodoFuncionamiento()).getMessages());

@@ -21,6 +21,8 @@ import co.edu.uco.compuconnect.api.validator.agendareserva.CrearAgendaReservaVal
 import co.edu.uco.compuconnect.business.facade.AgendaReservaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.AgendaReservaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
+import co.edu.uco.compuconnect.crosscutting.utils.Messages.AgendaControllerMessage;
+import co.edu.uco.compuconnect.crosscutting.utils.Messages.AgendaReservaControllerMessage;
 import co.edu.uco.compuconnect.dto.AgendaReservaDTO;
 
 @RestController
@@ -43,7 +45,7 @@ public final class AgendaReservaController {
 		List<AgendaReservaDTO> lista = facade.consultar(dto);
 		
 		List<String> messages = new ArrayList<>();
-		messages.add("Agendas reserva consultados correctamente");
+		messages.add(AgendaReservaControllerMessage.CONTROLLER_CREATE_SUCCESSFUL);
 		
 		Response<AgendaReservaDTO> response = new Response<>(lista, messages);
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -66,7 +68,7 @@ public final class AgendaReservaController {
             if (result.getMessages().isEmpty()) {
             	facade = new AgendaReservaFacadeImp();
                 facade.crear(dto);
-                response.getMessages().add("La agenda de reserva se ha creado correctamente");
+                response.getMessages().add(AgendaReservaControllerMessage.CONTROLLER_CREATE_SUCCESSFUL);
             } else {
                 statusCode = HttpStatus.BAD_REQUEST;
                 response.setMessages(result.getMessages());
@@ -80,8 +82,8 @@ public final class AgendaReservaController {
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            response.getMessages().add(AgendaReservaControllerMessage.CONSOLE_EXCEPTION_TECHNICAL_MESSAGE);
+            log.error(AgendaReservaControllerMessage.CONSOLE_EXCEPTION_USER_MESSAGE);
             exception.printStackTrace();
         }
 
@@ -98,7 +100,7 @@ public final class AgendaReservaController {
             dto.setIdentificador(id);
             facade = new AgendaReservaFacadeImp();
             facade.eliminar(dto);
-            response.getMessages().add("La agenda reserva se ha eliminado correctamente");
+            response.getMessages().add(AgendaControllerMessage.CONTROLLER_DELETE_SUCCESSFUL);
         } catch (final CompuconnectException exception) {
             statusCode = HttpStatus.BAD_REQUEST;
             response.getMessages().add(exception.getUserMessage());
@@ -107,8 +109,8 @@ public final class AgendaReservaController {
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            response.getMessages().add(AgendaReservaControllerMessage.CONSOLE_EXCEPTION_TECHNICAL_MESSAGE);
+            log.error(AgendaReservaControllerMessage.CONSOLE_EXCEPTION_USER_MESSAGE);
             exception.printStackTrace();
         }
 

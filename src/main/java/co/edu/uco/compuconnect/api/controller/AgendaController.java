@@ -23,6 +23,7 @@ import co.edu.uco.compuconnect.api.validator.agenda.CrearAgendaValidation;
 import co.edu.uco.compuconnect.business.facade.AgendaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.AgendaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
+import co.edu.uco.compuconnect.crosscutting.utils.Messages.AgendaControllerMessage;
 import co.edu.uco.compuconnect.dto.AgendaDTO;
 
 @RestController
@@ -69,7 +70,7 @@ public final class AgendaController {
             if (result.getMessages().isEmpty()) {
             	facade = new AgendaFacadeImp();
                 facade.registrar(dto);
-                response.getMessages().add("La agenda se ha creado correctamente");
+                response.getMessages().add(AgendaControllerMessage.CONTROLLER_CREATE_SUCCESSFUL);
             } else {
                 statusCode = HttpStatus.BAD_REQUEST;
                 response.setMessages(result.getMessages());
@@ -83,8 +84,8 @@ public final class AgendaController {
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            response.getMessages().add(AgendaControllerMessage.CONSOLE_EXCEPTION_TECHNICAL_MESSAGE);
+            log.error(AgendaControllerMessage.CONSOLE_EXCEPTION_USER_MESSAGE);
             exception.printStackTrace();
         }
 
@@ -104,7 +105,7 @@ public final class AgendaController {
             if (result.getMessages().isEmpty()) {
             	facade = new AgendaFacadeImp();
                 facade.modificar(dto);
-                response.getMessages().add("La agenda se ha actualizado correctamente");
+                response.getMessages().add(AgendaControllerMessage.CONTROLLER_UPDATE_SUCCESSFUL);
             } else {
                 statusCode = HttpStatus.BAD_REQUEST;
                 response.setMessages(result.getMessages());
@@ -117,8 +118,8 @@ public final class AgendaController {
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            response.getMessages().add(AgendaControllerMessage.CONSOLE_EXCEPTION_TECHNICAL_MESSAGE);
+            log.error(AgendaControllerMessage.CONSOLE_EXCEPTION_USER_MESSAGE);
             exception.printStackTrace();
         }
 
@@ -135,7 +136,7 @@ public final class AgendaController {
             AgendaDTO dto = new AgendaDTO();
             dto.setIdentificador(id);
             facade.eliminar(dto);
-            response.getMessages().add("La agenda se ha eliminado correctamente");
+            response.getMessages().add(AgendaControllerMessage.CONTROLLER_DELETE_SUCCESSFUL);
         } catch (final CompuconnectException exception) {
             statusCode = HttpStatus.BAD_REQUEST;
             response.getMessages().add(exception.getUserMessage());
@@ -144,8 +145,8 @@ public final class AgendaController {
             exception.printStackTrace();
         } catch (final Exception exception) {
             statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-            response.getMessages().add("Se ha presentado un problema inesperado. Por favor, intenta de nuevo y si el problema persiste, contacta al administrador de la aplicación");
-            log.error("Se ha presentado un problema inesperado. Por favor validar la consola de errores...");
+            response.getMessages().add(AgendaControllerMessage.CONSOLE_EXCEPTION_TECHNICAL_MESSAGE);
+            log.error(AgendaControllerMessage.CONSOLE_EXCEPTION_USER_MESSAGE);
             exception.printStackTrace();
         }
 
