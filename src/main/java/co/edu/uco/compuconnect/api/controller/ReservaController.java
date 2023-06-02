@@ -48,6 +48,7 @@ public final class ReservaController {
 	public ResponseEntity<Response<ReservaDTO>> list(@RequestBody ReservaDTO dto) {
 		
 		facade = new ReservaFacadeImp();
+		facade = new ReservaFacadeImp();
 		List<ReservaDTO> lista = facade.consultar(dto);
 		
 		List<String> messages = new ArrayList<>();
