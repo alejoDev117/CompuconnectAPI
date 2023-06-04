@@ -50,9 +50,6 @@ public class ReservaValidation implements Validation<ReservaDTO> {
             if (UtilObject.isNull(data.getHoraCreacion())) {
                 result.addMessage("La hora de creación de la reserva no puede estar vacía");
             }
-            if (UtilObject.isNull(data.getDetalle())) {
-                result.addMessage("El detalle de la reserva no puede estar vacía");
-            }
         }
 
         return result;

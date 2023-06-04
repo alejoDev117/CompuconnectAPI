@@ -30,7 +30,7 @@ public final class ModificarDetalleReservaValidation implements Validation<Detal
             result.addMessages(IdentificadorValidation.validate(data.getIdentificador()).getMessages());
             result.addMessages(DiaSemanalValidation.validate(data.getDia()).getMessages());
             result.addMessages(HoraInicioValidation.validate(data.getHoraInicio()).getMessages());
-            result.addMessages(HoraFinValidation.validate(data.getHorFin()).getMessages());
+            result.addMessages(HoraFinValidation.validate(data.getHoraFin()).getMessages());
         }
 
         return result;

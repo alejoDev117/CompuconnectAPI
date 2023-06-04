@@ -1,12 +1,12 @@
 package co.edu.uco.compuconnect.api.validator.reserva;
 
 import co.edu.uco.compuconnect.api.validator.Result;
+
 import co.edu.uco.compuconnect.api.validator.Validation;
 import co.edu.uco.compuconnect.api.validator.generalcommon.IdentificadorValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.AgendaValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.AutorValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.DescripcionValidation;
-import co.edu.uco.compuconnect.api.validator.reserva.common.DetalleReservaValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.FechaFinValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.FechaInicioValidation;
 import co.edu.uco.compuconnect.api.validator.reserva.common.FrecuenciaValidation;
@@ -41,7 +41,7 @@ public final class ModificarReservaValidation implements Validation<ReservaDTO> 
             result.addMessages(DescripcionValidation.validate(data.getDescripcion()).getMessages());
             result.addMessages(HoraCreacionValidation.validate(data.getHoraCreacion()).getMessages());
             result.addMessages(FrecuenciaValidation.validate(data.getFrecuencia()).getMessages());
-            result.addMessages(DetalleReservaValidation.validate(data.getDetalle()).getMessages());
+
         }
 
         return result;
