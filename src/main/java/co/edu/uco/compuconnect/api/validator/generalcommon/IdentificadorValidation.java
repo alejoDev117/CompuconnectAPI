@@ -26,7 +26,7 @@ public class IdentificadorValidation implements Validation<UUID>{
 			result.addMessage(IdentificadorValidationMessage.IDENTIFICADOR_EMPTY_MESSAGE);
 		}
 		
-		else if(UtilUUID.isDefault(data)) {
+		else if(!UtilUUID.isDefault(data)) {
 			result.addMessage(IdentificadorValidationMessage.IDENTIFICADOR_DEFAULT_MESSAGE);
 		}
 		

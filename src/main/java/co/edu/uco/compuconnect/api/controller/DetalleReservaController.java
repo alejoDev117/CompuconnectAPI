@@ -58,7 +58,7 @@ public final class DetalleReservaController {
     }
 
     @PostMapping
-    public ResponseEntity<Response<DetalleReservaDTO>> create(@RequestBody DetalleReservaDTO dto) {
+    public ResponseEntity<Response<DetalleReservaDTO>> create(@RequestBody List<DetalleReservaDTO> dto) {
         var statusCode = HttpStatus.OK;
         var response = new Response<DetalleReservaDTO>();
 

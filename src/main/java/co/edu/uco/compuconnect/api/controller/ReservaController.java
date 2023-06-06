@@ -24,6 +24,7 @@ import co.edu.uco.compuconnect.business.facade.ReservaFacade;
 import co.edu.uco.compuconnect.business.facade.imp.ReservaFacadeImp;
 import co.edu.uco.compuconnect.crosscutting.exceptions.CompuconnectException;
 import co.edu.uco.compuconnect.crosscutting.utils.Messages.ReservaControllerMessage;
+import co.edu.uco.compuconnect.dto.DetalleReservaDTO;
 import co.edu.uco.compuconnect.dto.ReservaDTO;
 
 
