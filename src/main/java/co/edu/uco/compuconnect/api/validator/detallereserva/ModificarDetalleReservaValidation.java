@@ -5,7 +5,6 @@ import co.edu.uco.compuconnect.api.validator.Validation;
 import co.edu.uco.compuconnect.api.validator.detallereserva.common.DiaSemanalValidation;
 import co.edu.uco.compuconnect.api.validator.detallereserva.common.HoraFinValidation;
 import co.edu.uco.compuconnect.api.validator.detallereserva.common.HoraInicioValidation;
-import co.edu.uco.compuconnect.api.validator.detallereserva.common.ReservaValidation;
 import co.edu.uco.compuconnect.api.validator.generalcommon.IdentificadorValidation;
 import co.edu.uco.compuconnect.crosscutting.utils.UtilObject;
 import co.edu.uco.compuconnect.dto.DetalleReservaDTO;

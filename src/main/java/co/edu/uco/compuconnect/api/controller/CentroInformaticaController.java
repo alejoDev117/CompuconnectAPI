@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import co.edu.uco.compuconnect.dto.CentroInformaticaDTO;
 
 @RestController
 @RequestMapping("compuconnect/api/v2/centroinformatica")
+@CrossOrigin
 public final class CentroInformaticaController {
 
 	private Logger log = LoggerFactory.getLogger(CentroInformaticaController.class);
@@ -38,7 +40,7 @@ public final class CentroInformaticaController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Response<CentroInformaticaDTO>> list(@RequestBody CentroInformaticaDTO dto) {
+	public ResponseEntity<Response<CentroInformaticaDTO>> list(CentroInformaticaDTO dto) {
 		
 		facade = new CentroInformaticaFacadeImp();
 		List<CentroInformaticaDTO> lista = facade.read(dto);
